@@ -1,4 +1,14 @@
 const typeDefs = `
+  type AuthPayload {
+    token: String
+    user: User
+  }
+
+  type User {
+    id: ID!
+    email: String!
+  }
+
   type Message {
     id: ID!
     content: String!
@@ -7,9 +17,14 @@ const typeDefs = `
   type Query {
     messages: [Message!]
     message(id: ID!): Message
+    users: [User!]!
+    user(id: ID!): User
   }
 
   type Mutation {
+    signup(email: String!, password: String!): AuthPayload
+    login(email: String!, password: String!): AuthPayload
+    deleteUser(id: ID!): User!
     addMessage(content: String!): Message
     updateMessage(id: ID!, content: String!): Message
     deleteMessage(id: ID!): Message
@@ -21,5 +36,6 @@ const typeDefs = `
     messageDeleted: Message
   }
 `;
+
 
 export default typeDefs;
