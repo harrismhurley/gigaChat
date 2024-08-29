@@ -13,6 +13,7 @@ const resolvers = {
       const message = { id: `${messages.length + 1}`, content };
       messages.push(message);
       pubsub.publish('MESSAGE_ADDED', { messageAdded: message });
+      console.log('MESSAGE_ADDED event published:', message);
       return message;
     },
     updateMessage: (parent: any, { id, content }: { id: string, content: string }) => {

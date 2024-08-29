@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const MESSAGE_ADDED = gql`
-  subscription OnMessageAdded {
+  subscription messageAdded {
     messageAdded {
       id
       content
@@ -10,7 +10,7 @@ export const MESSAGE_ADDED = gql`
 `;
 
 export const MESSAGE_UPDATED = gql`
-  subscription OnMessageUpdated {
+  subscription messageUpdated {
     messageUpdated {
       id
       content
@@ -19,7 +19,7 @@ export const MESSAGE_UPDATED = gql`
 `;
 
 export const MESSAGE_DELETED = gql`
-  subscription OnMessageDeleted {
+  subscription messageDeleted {
     messageDeleted {
       id
     }

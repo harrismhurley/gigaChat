@@ -7,9 +7,9 @@ import express from 'express';
 import { useServer } from 'graphql-ws/lib/use/ws';
 import { WebSocketServer } from 'ws';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import typeDefs from './schemas/typedefs';
 import resolvers from './schemas/resolvers';
-import cors from 'cors';
 
 const port = 3000;
 
@@ -18,7 +18,7 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const app = express();
 const httpServer = createServer(app);
 
-// Apply CORS middleware
+// Apply CORS middleware before any other middleware or routes
 app.use(cors());
 
 // Set up WebSocket server
@@ -27,7 +27,16 @@ const wsServer = new WebSocketServer({
   path: '/graphql',
 });
 
-const wsServerCleanup = useServer({ schema }, wsServer);
+const wsServerCleanup = useServer({ 
+  schema,
+  onConnect: () => {
+    console.log('Connected to WebSocket');
+  },
+  onDisconnect: () => {
+    console.log('Disconnected from WebSocket');
+  },
+}, wsServer);
+
 
 async function startServer() {
   const apolloServer = new ApolloServer({
@@ -46,10 +55,13 @@ async function startServer() {
     ],
   });
 
+  // Start Apollo Server
   await apolloServer.start();
 
+  // Apply Express middleware for handling GraphQL HTTP requests
   app.use('/graphql', bodyParser.json(), expressMiddleware(apolloServer));
 
+  // Start the HTTP server
   httpServer.listen(port, () => {
     console.log(`🚀 Query endpoint ready at http://localhost:${port}/graphql`);
     console.log(`🚀 Subscription endpoint ready at ws://localhost:${port}/graphql`);
