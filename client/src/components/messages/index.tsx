@@ -20,15 +20,20 @@ const Messages: React.FC = () => {
   const [content, setContent] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Define types for useQuery and useMutation hooks
+  // Fetch existing messages
   const { data, loading, error } = useQuery<{ messages: Message[] }>(GET_MESSAGES);
 
+  // Define mutations for adding, updating, and deleting messages
   const [addMessage] = useMutation(ADD_MESSAGE);
   const [updateMessage] = useMutation(UPDATE_MESSAGE);
   const [deleteMessage] = useMutation(DELETE_MESSAGE);
 
+  // Subscription for added messages
   useSubscription(MESSAGE_ADDED, {
     onData: ({ client, data }) => {
+
+    console.log('Received new message data:', data);
+
       if (data) {
         client.cache.modify({
           fields: {
@@ -50,6 +55,7 @@ const Messages: React.FC = () => {
     },
   });
 
+  // Subscription for updated messages
   useSubscription(MESSAGE_UPDATED, {
     onData: ({ client, data }) => {
       if (data) {
@@ -76,6 +82,7 @@ const Messages: React.FC = () => {
     },
   });
 
+  // Subscription for deleted messages
   useSubscription(MESSAGE_DELETED, {
     onData: ({ client, data }) => {
       if (data) {
@@ -98,11 +105,15 @@ const Messages: React.FC = () => {
       setErrorMessage('Message cannot be empty. Please enter your message...');
       return;
     }
-    addMessage({ variables: { content } });
+    addMessage({ variables: { content } }).then(response => {
+      console.log('Message added:', response.data);
+    }).catch(error => {
+      console.error('Error adding message:', error);
+    });
     setContent('');
     setErrorMessage('');
   };
-
+   
   const handleUpdateMessage = (id: string) => {
     const messageObj = data?.messages.find(msg => msg.id === id);
     if (messageObj) {
