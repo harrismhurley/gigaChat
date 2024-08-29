@@ -9,6 +9,7 @@ import { WebSocketServer } from 'ws';
 import bodyParser from 'body-parser';
 import typeDefs from './schemas/typedefs';
 import resolvers from './schemas/resolvers';
+import cors from 'cors';
 
 const port = 3000;
 
@@ -17,6 +18,10 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const app = express();
 const httpServer = createServer(app);
 
+// Apply CORS middleware
+app.use(cors());
+
+// Set up WebSocket server
 const wsServer = new WebSocketServer({
   server: httpServer,
   path: '/graphql',
