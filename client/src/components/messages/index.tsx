@@ -31,9 +31,6 @@ const Messages: React.FC = () => {
   // Subscription for added messages
   useSubscription(MESSAGE_ADDED, {
     onData: ({ client, data }) => {
-
-    console.log('Received new message data:', data);
-
       if (data) {
         client.cache.modify({
           fields: {

@@ -1,16 +1,48 @@
 import { PubSub } from 'graphql-subscriptions';
+import { v4 as uuidv4 } from 'uuid';
+import { generateToken, verifyPassword, hashPassword } from '../utils/auth';
 
 const pubsub = new PubSub();
 const messages: Array<{ id: string, content: string }> = [];
+const users: Array<{ id: string, email: string, password: string }> = [];
 
 const resolvers = {
   Query: {
     messages: () => messages,
     message: (parent: any, { id }: { id: string }) => messages.find(message => message.id === id),
+    users: () => users,
+    user: (parent: any, { id }: { id: string }) => users.find(user => user.id === id),
   },
   Mutation: {
+    signup: async (parent: any, { email, password }: { email: string, password: string }) => {
+      const hashedPassword = await hashPassword(password);
+      const user = { id: uuidv4(), email, password: hashedPassword };
+      users.push(user);
+      
+      // Generate token for the new user
+      const token = generateToken(user);
+      
+      return {
+        token,
+        user: { id: user.id, email: user.email }
+      };
+    },
+    login: async (parent: any, { email, password }: { email: string, password: string }) => {
+      const user = users.find(user => user.email === email);
+      if (!user) throw new Error('User not found');
+      
+      const isPasswordValid = await verifyPassword(password, user.password);
+      if (!isPasswordValid) throw new Error('Invalid password');
+      
+      const token = generateToken(user);
+      return {
+        token,
+        user: { id: user.id, email: user.email }
+      };
+    },
+
     addMessage: (parent: any, { content }: { content: string }) => {
-      const message = { id: `${messages.length + 1}`, content };
+      const message = { id: uuidv4(), content };
       messages.push(message);
       pubsub.publish('MESSAGE_ADDED', { messageAdded: message });
       console.log('MESSAGE_ADDED event published:', message);

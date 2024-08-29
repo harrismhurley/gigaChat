@@ -1,17 +1,19 @@
 // client/src/App.tsx
 import React from 'react';
 import { ApolloProvider } from '@apollo/client';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import client from './apolloClient';
+import FrontPage from './pages/frontPage/index';
 import Messages from './components/messages';
 
 const App: React.FC = () => (
-  // Wrap the application with ApolloProvider and pass the Apollo Client instance
   <ApolloProvider client={client}>
-    <div className='app-wrapper'>
-      <h1>Real-Time Message Board</h1>
-      <h2>GraphQL Subscriptions with React</h2>
-      <Messages /> {/* Render the Messages component */}
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<FrontPage />} />
+        <Route path="/home" element={<Messages />} />
+      </Routes>
+    </Router>
   </ApolloProvider>
 );
 
