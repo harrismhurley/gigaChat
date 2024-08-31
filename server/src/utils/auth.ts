@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-const SECRET_KEY = 'your-secret-key'; // Replace with your actual secret key
+const SECRET_KEY = 'your-secret-key';
 
 // Helper function to generate a JWT token
 export const generateToken = (user: { id: string; email: string }): string => {
