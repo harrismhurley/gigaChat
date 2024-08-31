@@ -1,12 +1,15 @@
-// src/pages/main/index.tsx
 import React from 'react';
-import Messages from '../../components/messages';
+import Navbar from '../../components/navbar/index';
+import Messages from '../../components/messages/index';
 
 const MainPage: React.FC = () => {
   return (
     <div>
-      <h2>Messages</h2>
-      <Messages />
+      <Navbar />
+      <div>
+        <h2>Messages</h2>
+        <Messages />
+      </div>
     </div>
   );
 };

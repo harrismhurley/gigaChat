@@ -18,10 +18,8 @@ const schema = makeExecutableSchema({ typeDefs, resolvers });
 const app = express();
 const httpServer = createServer(app);
 
-// Apply CORS middleware before any other middleware or routes
 app.use(cors());
 
-// Set up WebSocket server
 const wsServer = new WebSocketServer({
   server: httpServer,
   path: '/graphql',
