@@ -15,6 +15,12 @@ const resolvers = {
   },
   Mutation: {
     signup: async (parent: any, { email, password }: { email: string, password: string }) => {
+      // Check if the email is already in use
+      const existingUser = users.find(user => user.email === email);
+      if (existingUser) {
+        throw new Error('Email is already in use.');
+      }
+
       const hashedPassword = await hashPassword(password);
       const user = { id: uuidv4(), email, password: hashedPassword };
       users.push(user);
@@ -31,10 +37,13 @@ const resolvers = {
       const user = users.find(user => user.email === email);
       if (!user) throw new Error('User not found');
       
+      console.log('Password before verification:', password); // Log password before verification
       const isPasswordValid = await verifyPassword(password, user.password);
       if (!isPasswordValid) throw new Error('Invalid password');
       
       const token = generateToken(user);
+      console.log('Token:', token); // Log token
+
       return {
         token,
         user: { id: user.id, email: user.email }

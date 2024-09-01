@@ -15,5 +15,8 @@ export const verifyPassword = async (password: string, hashedPassword: string): 
 
 // Helper function to hash a password
 export const hashPassword = async (password: string): Promise<string> => {
-  return await bcrypt.hash(password, 10);
+  console.log('Password before hashing:', password); // Log the password before hashing
+  const hashedPassword = await bcrypt.hash(password, 10);
+  console.log('Password after hashing:', hashedPassword); // Log the hashed password
+  return hashedPassword;
 };

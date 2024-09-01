@@ -32,6 +32,7 @@ const Messages: React.FC = () => {
   useSubscription(MESSAGE_ADDED, {
     onData: ({ client, data }) => {
       if (data) {
+        console.log('Message added:', data.data?.messageAdded); // Debug log
         client.cache.modify({
           fields: {
             messages(existingMessages = []) {
@@ -56,6 +57,7 @@ const Messages: React.FC = () => {
   useSubscription(MESSAGE_UPDATED, {
     onData: ({ client, data }) => {
       if (data) {
+        console.log('Message updated:', data.data?.messageUpdated); // Debug log
         client.cache.modify({
           fields: {
             messages(existingMessages = []) {
@@ -83,6 +85,7 @@ const Messages: React.FC = () => {
   useSubscription(MESSAGE_DELETED, {
     onData: ({ client, data }) => {
       if (data) {
+        console.log('Message deleted:', data.data?.messageDeleted); // Debug log
         client.cache.modify({
           fields: {
             messages(existingMessages = []) {
@@ -102,15 +105,17 @@ const Messages: React.FC = () => {
       setErrorMessage('Message cannot be empty. Please enter your message...');
       return;
     }
-    addMessage({ variables: { content } }).then(response => {
-      console.log('Message added:', response.data);
-    }).catch(error => {
-      console.error('Error adding message:', error);
-    });
+    addMessage({ variables: { content } })
+      .then(response => {
+        console.log('Message added:', response.data); // Debug log
+      })
+      .catch(error => {
+        console.error('Error adding message:', error);
+      });
     setContent('');
     setErrorMessage('');
   };
-   
+
   const handleUpdateMessage = (id: string) => {
     const messageObj = data?.messages.find(msg => msg.id === id);
     if (messageObj) {
