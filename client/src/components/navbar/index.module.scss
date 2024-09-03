@@ -7,11 +7,20 @@
   color: white;
 
   .logo {
-    margin: 0;
-    font-size: 24px;
-    background-color: #fb8500;
-    border-radius: 5px;
-    padding: 2px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+  }
+
+  .middleSection {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+
+    .searchInput {
+      max-width: 300px;
+      width: 100%;
+    }
   }
 
   .buttonGroup {
@@ -22,16 +31,29 @@
       padding: 5px 10px;
       border: none;
       border-radius: 3px;
-      background-color: #fb8500;
+      background-color: transparent;
       color: white;
       cursor: pointer;
 
       &:hover {
         background-color: #777;
       }
+    }
 
-      svg {
-        font-size: 16px;
+    .addPostButton {
+      background-color: transparent;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .logoutButton {
+      background-color: #fb8500;
+      color: white;
+
+      &:hover {
+        background-color: #e76f51;
       }
     }
   }

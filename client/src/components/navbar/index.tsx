@@ -1,13 +1,12 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons'; // Import the user icon
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for redirection
+import { useNavigate } from 'react-router-dom'; 
+import { Avatar, IconButton, Input } from '@chakra-ui/react';
+import { PlusSquareIcon } from '@chakra-ui/icons';
 import styles from './index.module.scss';
-import FormDrawer from '../addForm'; // Import the new drawer component
+import FormDrawer from '../addForm'; 
 
 const Navbar: React.FC = () => {
-  const navigate = useNavigate(); // Initialize useNavigate
-
+  const navigate = useNavigate();
   const handleLogout = () => {
     // Clear the token from localStorage or cookies
     localStorage.removeItem('token');
@@ -17,13 +16,13 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className={styles.navbar}>
-      <h1 className={styles.logo}>GigaChat</h1>
+      <Avatar name="GigaChat" src="path-to-your-avatar-image" className={styles.logo} />
+      <div className={styles.middleSection}>
+        <Input placeholder="Search..." variant="outline" className={styles.searchInput} />
+      </div>
       <div className={styles.buttonGroup}>
-        <FormDrawer /> {/* Add the FormDrawer component here */}
-        <button onClick={handleLogout}>Logout</button>
-        <button>
-          <FontAwesomeIcon icon={faUser} />
-        </button>
+        <FormDrawer />
+        <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
       </div>
     </nav>
   );

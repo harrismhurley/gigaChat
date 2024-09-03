@@ -1,7 +1,9 @@
-// src/components/messages/index.tsx
+// src/components/eventList/index.tsx
 import React, { useState } from 'react';
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client';
 import styles from './index.module.scss';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMapPin } from '@fortawesome/free-solid-svg-icons';
 import {
   GET_MESSAGES,
   DELETE_MESSAGE,
@@ -15,7 +17,7 @@ interface Message {
   content: string;
 }
 
-const Messages: React.FC = () => {
+const EventList: React.FC = () => {
   const [selectedMessage, setSelectedMessage] = useState<{ id: string; content: string } | null>(null);
   const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
 
@@ -83,17 +85,27 @@ const Messages: React.FC = () => {
 
   return (
     <div className={styles.container}>
-      <ul className={styles.messageList}>
+      <div className={styles.cardContainer}>
         {data?.messages.map((message: Message) => (
-          <li key={message.id}>
-            {message.content}
-            <div className="button-wrapper">
-              <button onClick={() => handleUpdateMessage(message.id, message.content)}>Update</button>
-              <button onClick={() => handleDeleteMessage(message.id)}>Delete</button>
+          <div className={styles.card} key={message.id}>
+            <div className={styles.header}>
+              <span className={styles.headerText}>Event Header</span>
+              <span className={styles.distance}>
+                <FontAwesomeIcon icon={faMapPin} />
+                <span className={styles.distanceValue}>42.0 mi</span>
+              </span>
             </div>
-          </li>
+            <div className={styles.cardContent}>
+              <p>{message.content}</p>
+              <p className={styles.address}>123 Placeholder St, City, Country</p>
+              <div className={styles.buttonWrapper}>
+                <button onClick={() => handleUpdateMessage(message.id, message.content)}>Update</button>
+                <button onClick={() => handleDeleteMessage(message.id)}>Delete</button>
+              </div>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
       {selectedMessage && (
         <UpdateForm
           isOpen={isUpdateFormOpen}
@@ -106,4 +118,4 @@ const Messages: React.FC = () => {
   );
 };
 
-export default Messages;
+export default EventList;
