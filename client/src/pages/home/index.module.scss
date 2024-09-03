@@ -17,7 +17,7 @@
   .blueYellowSection {
     display: flex;
     flex-direction: column;
-    flex: 1;
+    flex: 2;
   }
   
   .blueBox, .yellowBox {
@@ -30,7 +30,6 @@
   }
   
   .yellowBox {
-    background-color: yellow;
     color: black;
   }
   
