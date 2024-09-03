@@ -3,7 +3,7 @@ import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import client from './apolloClient';
 import FrontPage from './pages/frontPage/index';
-import Home from './pages/main/index';
+import Home from './pages/home/index';
 import { AuthProvider } from './utils/authContext'; // Import AuthProvider
 
 const App: React.FC = () => (
