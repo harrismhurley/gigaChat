@@ -1,0 +1,36 @@
+.homeContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .mainContent {
+    display: flex;
+    flex: 1;
+  }
+  
+  .redSection {
+    background-color: red;
+    flex: 1;
+  }
+  
+  .blueYellowSection {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  
+  .blueBox, .yellowBox {
+    height: 50vh;;
+  }
+  
+  .blueBox {
+    background-color: blue;
+    color: white;
+  }
+  
+  .yellowBox {
+    background-color: yellow;
+    color: black;
+  }
+  

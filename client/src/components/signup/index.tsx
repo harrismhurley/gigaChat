@@ -3,6 +3,8 @@ import { useMutation } from '@apollo/client';
 import { SIGNUP_MUTATION } from '../../schemas/mutations';
 import styles from './index.module.scss';
 
+
+
 const Signup: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
