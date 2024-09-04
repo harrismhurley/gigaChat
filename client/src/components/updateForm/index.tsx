@@ -13,43 +13,47 @@ interface UpdateFormProps {
 
 const UpdateForm: React.FC<UpdateFormProps> = ({ isOpen, onClose, messageId, initialContent }) => {
   const [content, setContent] = useState(initialContent);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  // Define the mutation for updating a message
   const [updateMessage] = useMutation(UPDATE_MESSAGE);
 
-  const handleUpdate = () => {
-    if (content.trim()) {
-      updateMessage({ variables: { id: messageId, content } })
-        .then(() => {
-          onClose(); // Close drawer on successful update
-        })
-        .catch(error => {
-          console.error('Error updating message:', error);
-        });
+  const handleUpdateMessage = async () => {
+    if (!content.trim()) {
+      setErrorMessage('Message cannot be empty. Please enter your message...');
+      return;
+    }
+    try {
+      await updateMessage({ variables: { id: messageId, content } });
+      setContent('');
+      setErrorMessage('');
+      onClose();
+    } catch (error) {
+      console.error('Error updating message:', error);
     }
   };
 
   return (
-    <Drawer
-      isOpen={isOpen}
-      placement="right"
-      onClose={onClose}
-    >
+    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
       <DrawerContent>
         <DrawerCloseButton />
         <DrawerHeader>Update Message</DrawerHeader>
         <DrawerBody>
           <Input
+            placeholder="Update your message here..."
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            placeholder="Enter new message content"
+            mb={4}
           />
+          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
         </DrawerBody>
         <DrawerFooter>
           <Button variant="outline" mr={3} onClick={onClose}>
             Cancel
           </Button>
-          <Button colorScheme="blue" onClick={handleUpdate}>
-            Update
+          <Button colorScheme="blue" onClick={handleUpdateMessage}>
+            Submit
           </Button>
         </DrawerFooter>
       </DrawerContent>

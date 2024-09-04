@@ -1,7 +1,9 @@
 import React from 'react';
 import Navbar from '../../components/navbar/index';
 import Active from '../../components/activeCard/index';
+import EventList from '../../components/eventList/index';
 import styles from './index.module.scss';
+
 
 const Home: React.FC = () => {
   return (
@@ -9,6 +11,7 @@ const Home: React.FC = () => {
       <div className={styles.mainContent}>
         <div className={styles.redSection}>
           <Navbar />  
+          <EventList />  
         </div>
         <div className={styles.blueYellowSection}>
           <div className={styles.blueBox}>Blue Box</div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Button, Input, useDisclosure } from '@chakra-ui/react';
+import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Button, Input, useDisclosure, IconButton } from '@chakra-ui/react';
+import { PlusSquareIcon } from '@chakra-ui/icons';
 import { useMutation } from '@apollo/client';
 import { ADD_MESSAGE } from '../../schemas';
 
@@ -28,7 +29,13 @@ const FormDrawer: React.FC = () => {
 
   return (
     <>
-      <Button onClick={onOpen}>Add Post</Button>
+      <IconButton 
+        aria-label="Add Post"
+        icon={<PlusSquareIcon />} 
+        onClick={onOpen} 
+        variant="outline"
+        colorScheme="blue"
+      />
       <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
         <DrawerOverlay />
         <DrawerContent>
