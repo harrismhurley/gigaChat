@@ -1,0 +1,36 @@
+// FormDrawer.module.scss
+
+.drawerContainer {
+    width: 250px;
+    padding: 16px;
+  
+    .textField {
+      margin-bottom: 16px;
+    }
+  
+    .datePicker {
+      margin-bottom: 16px;
+      
+      .MuiOutlinedInput-root {
+        background-color: white;
+        border-radius: 4px;
+  
+        fieldset {
+          border-color: transparent;
+        }
+  
+        &:hover fieldset {
+          border-color: #ccc;
+        }
+  
+        &.Mui-focused fieldset {
+          border-color: #777;
+        }
+      }
+    }
+  
+    .submitButton {
+      margin-top: 16px;
+    }
+  }
+  

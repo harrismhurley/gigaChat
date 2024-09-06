@@ -1,28 +1,33 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom'; 
-import { Avatar, IconButton, Input } from '@chakra-ui/react';
-import { PlusSquareIcon } from '@chakra-ui/icons';
+import { useNavigate } from 'react-router-dom';
+import { Avatar, TextField, Button } from '@mui/material';
 import styles from './index.module.scss';
-import FormDrawer from '../addForm'; 
+import FormDrawer from '../addForm'; // Re-added FormDrawer
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+
   const handleLogout = () => {
-    // Clear the token from localStorage or cookies
     localStorage.removeItem('token');
-    // Redirect to the front page or login page
     navigate('/');
   };
 
   return (
     <nav className={styles.navbar}>
-      <Avatar name="GigaChat" src="path-to-your-avatar-image" className={styles.logo} />
+      <Avatar alt="GigaChat" src="path-to-your-avatar-image" className={styles.logo} />
       <div className={styles.middleSection}>
-        <Input placeholder="Search..." variant="outline" className={styles.searchInput} />
+        <TextField
+          variant="outlined"
+          placeholder="Search..."
+          className={styles.searchInput}
+          InputProps={{ className: styles.input }}
+        />
       </div>
       <div className={styles.buttonGroup}>
-        <FormDrawer />
-        <button className={styles.logoutButton} onClick={handleLogout}>Logout</button>
+        <FormDrawer /> {/* FormDrawer IconButton now added here */}
+        <Button variant="contained" className={styles.logoutButton} onClick={handleLogout}>
+          Logout
+        </Button>
       </div>
     </nav>
   );
