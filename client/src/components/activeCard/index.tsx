@@ -1,5 +1,5 @@
 import React from 'react';
-import { Avatar } from '@chakra-ui/react';
+import { Avatar, Card, Typography, Box } from '@mui/material';
 import styles from './index.module.scss';
 
 interface CardProps {
@@ -11,22 +11,22 @@ interface CardProps {
   createdBy: string;
 }
 
-const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdBy }) => {
+const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdBy, imageSrc }) => {
   return (
-    <div className={styles.card}>
-      <div className={styles.leftBox}>
-        <div className={styles.userInfo}>
-          <Avatar name={createdBy} />
-          <span className={styles.username}>{createdBy}</span>
-        </div>
-        <h2 className={styles.title}>{title}</h2>
-        <p className={styles.description}>{description}</p>
-        <p className={styles.address}>{address}</p>
-      </div>
-      <div className={styles.rightBox}>
-        <img src="https://via.placeholder.com/300x300" alt="Placeholder" />
-      </div>
-    </div>
+    <Card className={styles.card} elevation={3}> {/* Use Material UI Card */}
+      <Box className={styles.leftBox}>
+        <Box className={styles.userInfo}>
+          <Avatar>{createdBy.charAt(0)}</Avatar> {/* Material UI Avatar */}
+          <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography>
+        </Box>
+        <Typography variant="h5" className={styles.title}>{title}</Typography>
+        <Typography variant="body1" className={styles.description}>{description}</Typography>
+        <Typography variant="body2" className={styles.address}>{address}</Typography>
+      </Box>
+      <Box className={styles.rightBox}>
+        <img src={imageSrc || 'https://via.placeholder.com/300x300'} alt="Placeholder" />
+      </Box>
+    </Card>
   );
 };
 

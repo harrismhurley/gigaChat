@@ -10,16 +10,39 @@
     border-radius: 50%;
     width: 40px;
     height: 40px;
+    margin-right: 20px;
   }
 
   .middleSection {
     flex: 1;
     display: flex;
     justify-content: center;
+    margin-right: 20px;
 
     .searchInput {
       max-width: 300px;
       width: 100%;
+
+      .input {
+        background-color: white;
+        border-radius: 4px;
+
+        .MuiOutlinedInput-root {
+          color: black;
+
+          fieldset {
+            border-color: transparent;
+          }
+
+          &:hover fieldset {
+            border-color: #ccc;
+          }
+
+          &.Mui-focused fieldset {
+            border-color: #777;
+          }
+        }
+      }
     }
   }
 
@@ -29,31 +52,16 @@
 
     button {
       padding: 5px 10px;
-      border: none;
       border-radius: 3px;
-      background-color: transparent;
-      color: white;
       cursor: pointer;
 
-      &:hover {
-        background-color: #777;
-      }
-    }
+      &.logoutButton {
+        background-color: #fb8500;
+        color: white;
 
-    .addPostButton {
-      background-color: transparent;
-
-      &:hover {
-        background-color: transparent;
-      }
-    }
-
-    .logoutButton {
-      background-color: #fb8500;
-      color: white;
-
-      &:hover {
-        background-color: #e76f51;
+        &:hover {
+          background-color: #e76f51;
+        }
       }
     }
   }

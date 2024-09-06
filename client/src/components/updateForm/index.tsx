@@ -1,8 +1,8 @@
-// src/components/updateForm/index.tsx
 import React, { useState } from 'react';
-import { Drawer, DrawerBody, DrawerFooter, DrawerHeader, DrawerOverlay, DrawerContent, DrawerCloseButton, Button, Input } from '@chakra-ui/react';
+import { Drawer, Button, TextField } from '@mui/material';
 import { useMutation } from '@apollo/client';
 import { UPDATE_MESSAGE } from '../../schemas';
+import styles from './index.module.scss'; // Import the SCSS module
 
 interface UpdateFormProps {
   isOpen: boolean;
@@ -34,29 +34,34 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ isOpen, onClose, messageId, ini
   };
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
-      <DrawerOverlay />
-      <DrawerContent>
-        <DrawerCloseButton />
-        <DrawerHeader>Update Message</DrawerHeader>
-        <DrawerBody>
-          <Input
-            placeholder="Update your message here..."
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            mb={4}
-          />
-          {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-        </DrawerBody>
-        <DrawerFooter>
-          <Button variant="outline" mr={3} onClick={onClose}>
-            Cancel
-          </Button>
-          <Button colorScheme="blue" onClick={handleUpdateMessage}>
-            Submit
-          </Button>
-        </DrawerFooter>
-      </DrawerContent>
+    <Drawer anchor="right" open={isOpen} onClose={onClose}>
+      <div className={styles.drawerContainer}>
+        <TextField
+          label="Update Message"
+          placeholder="Update your message here..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          fullWidth
+          margin="normal"
+          className={styles.textField}
+        />
+        {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={handleUpdateMessage}
+          className={styles.submitButton}
+        >
+          Submit
+        </Button>
+        <Button
+          variant="outlined"
+          onClick={onClose}
+          className={styles.cancelButton}
+        >
+          Cancel
+        </Button>
+      </div>
     </Drawer>
   );
 };

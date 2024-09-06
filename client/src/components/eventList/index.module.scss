@@ -1,83 +1,85 @@
-// src/components/eventList/index.module.scss
 .container {
   margin: 0 auto;
-}
 
-.cardContainer {
-  display: flex;
-  flex-direction: column;
-}
+  .cardContainer {
+    display: flex;
+    flex-direction: column;
 
-.card {
-  background-color: #444444;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  color: #ffffff;
-  padding: 20px;
-  position: relative;
-  border-bottom: 1px solid lightgrey; // Ensure each card has a light grey border at the bottom
-}
+    .card {
+      background-color: #444444;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: #ffffff;
+      margin-bottom: 15px;
+      border-radius: 8px;
 
-.header {
-  display: flex;
-  align-items: center; // Align items vertically centered
-  margin-bottom: 10px;
-}
+      .header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
 
-.headerText {
-  font-size: 1.2rem;
-  font-weight: bold;
-}
+        .headerText {
+          font-size: 1.2rem;
+          font-weight: bold;
+        }
 
-.distance {
-  display: flex;
-  align-items: center; // Center align pin and distance
-  margin-left: auto; // Push distance to the right
-  font-size: 1.2rem;
-}
+        .distance {
+          display: flex;
+          align-items: center;
+          margin-left: auto;
+          font-size: 1.2rem;
 
-.distanceValue {
-  margin-left: 5px; // Space between the pin icon and the distance value
-}
+          .distanceValue {
+            margin-left: 5px;
+          }
+        }
+      }
 
-.cardContent {
-  display: flex;
-  flex-direction: column;
-}
+      .cardContent {
+        display: flex;
+        flex-direction: column;
 
-.address {
-  font-size: 0.875rem;
-  color: #cccccc; // Light grey color for address
-  margin-bottom: 10px; // Space between address and buttons
-}
+        .address {
+          font-size: 0.875rem;
+          color: #cccccc;
+          margin-bottom: 10px;
+        }
 
-.buttonWrapper {
-  display: flex;
-}
+        .avatarWrapper {
+          display: flex;
+          align-items: center;
+          margin-bottom: 10px;
 
-button {
-  padding: 5px 10px;
-  border: none;
-  background-color: #007bff;
-  color: white;
-  cursor: pointer;
+          .username {
+            margin-left: 10px;
+            color: #ffffff;
+          }
+        }
 
-  &:hover {
-    background-color: #0056b3;
-  }
+        .buttonWrapper {
+          display: flex;
+          gap: 10px;
 
-  &:first-of-type {
-    background-color: #28a745;
+          button {
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
 
-    &:hover {
-      background-color: #218838;
-    }
-  }
+            &:first-of-type {
+              background-color: #28a745;
+              &:hover {
+                background-color: #218838;
+              }
+            }
 
-  &:last-of-type {
-    background-color: #dc3545;
-
-    &:hover {
-      background-color: #c82333;
+            &:last-of-type {
+              background-color: #dc3545;
+              &:hover {
+                background-color: #c82333;
+              }
+            }
+          }
+        }
+      }
     }
   }
 }
