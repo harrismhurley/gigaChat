@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Drawer, Button, TextField } from '@mui/material';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs, { Dayjs } from 'dayjs';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
-import { TextFieldProps } from '@mui/material';
 import { useMutation } from '@apollo/client';
-import { ADD_MESSAGE } from '../../schemas'; // Update the path as needed
+import { ADD_EVENT } from '../../schemas'; 
 import styles from './index.module.scss';
 
 const FormDrawer: React.FC = () => {
@@ -13,25 +12,35 @@ const FormDrawer: React.FC = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [address, setAddress] = useState('');
-  const [date, setDate] = useState<Dayjs | null>(dayjs());
-  const [addMessage, { loading, error }] = useMutation(ADD_MESSAGE);
+  const [date, setDate] = useState<Date | null>(new Date());
+  const [addEvent, { loading, error }] = useMutation(ADD_EVENT);
 
   const toggleDrawer = (open: boolean) => () => {
     setIsOpen(open);
   };
 
-  const handleAddMessage = async () => {
-    if (content) {
+  const handleAddEvent = async () => {
+    if (title && content) {
       try {
-        // Execute the mutation
-        await addMessage({ variables: { content } });
-        setContent(''); // Clear the content after successful submission
+        // Execute the mutation with all required fields
+        await addEvent({ 
+          variables: { 
+            title, 
+            content, 
+            address, 
+            date: date ? date.toISOString() : null 
+          } 
+        });
+        setTitle('');  // Reset the title field
+        setContent(''); // Reset the content field
+        setAddress(''); // Reset the address field
+        setDate(new Date()); // Reset date to initial value
         setIsOpen(false); // Close the drawer
       } catch (e) {
-        console.error('Error adding message:', e);
+        console.error('Error adding event:', e);
       }
     } else {
-      console.error('Content is required');
+      console.error('Title and content are required');
     }
   };
 
@@ -67,17 +76,22 @@ const FormDrawer: React.FC = () => {
             className={styles.textField}
           />
           <DatePicker
-            label="Select Date"
-            value={date}
-            onChange={(newValue: Dayjs | null) => setDate(newValue)}
-            renderInput={(params: TextFieldProps) => (
-              <TextField {...params} fullWidth margin="normal" className={styles.datePicker} />
-            )}
+            selected={date}
+            onChange={(newDate: Date | null) => setDate(newDate)}
+            dateFormat="yyyy/MM/dd"
+            className={styles.datePicker}
+            customInput={
+              <TextField
+                label="Select Date"
+                fullWidth
+                margin="normal"
+              />
+            }
           />
           <Button
             variant="contained"
             color="primary"
-            onClick={handleAddMessage}
+            onClick={handleAddEvent}
             className={styles.submitButton}
             disabled={loading} // Disable the button while loading
           >

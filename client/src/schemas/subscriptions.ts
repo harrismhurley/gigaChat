@@ -1,26 +1,32 @@
 import { gql } from '@apollo/client';
 
-export const MESSAGE_ADDED = gql`
-  subscription messageAdded {
-    messageAdded {
+export const EVENT_ADDED = gql`
+  subscription eventAdded {
+    eventAdded {
       id
+      title
       content
+      address
+      date
     }
   }
 `;
 
-export const MESSAGE_UPDATED = gql`
-  subscription messageUpdated {
-    messageUpdated {
+export const EVENT_UPDATED = gql`
+  subscription eventUpdated {
+    eventUpdated {
       id
+      title
       content
+      address
+      date
     }
   }
 `;
 
-export const MESSAGE_DELETED = gql`
-  subscription messageDeleted {
-    messageDeleted {
+export const EVENT_DELETED = gql`
+  subscription eventDeleted {
+    eventDeleted {
       id
     }
   }

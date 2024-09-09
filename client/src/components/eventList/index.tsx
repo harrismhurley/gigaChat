@@ -4,39 +4,48 @@ import { Avatar, Card, CardContent, Typography, Button, Box } from '@mui/materia
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapPin } from '@fortawesome/free-solid-svg-icons';
 import styles from './index.module.scss';
-import { GET_MESSAGES, DELETE_MESSAGE, MESSAGE_ADDED, MESSAGE_DELETED } from '../../schemas';
-// import UpdateForm from '../updateForm';
+import { GET_EVENTS, DELETE_EVENT, EVENT_ADDED, EVENT_DELETED } from '../../schemas';
+import UpdateForm from '../updateForm';
 
-interface Message {
+interface Event {
   id: string;
+  title: string;
   content: string;
+  address: string;
+  date: string;
   username?: string;
 }
 
-const EventList: React.FC = () => {
-  const [selectedMessage, setSelectedMessage] = useState<{ id: string; content: string } | null>(null);
+interface EventListProps {
+  onEventSelect: (event: Event) => void; // Add this prop
+}
+
+const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
+  const [selectedEvent, setSelectedEvent] = useState<{ id: string; content: string } | null>(null);
   const [isUpdateFormOpen, setIsUpdateFormOpen] = useState(false);
 
-  const { data, loading, error } = useQuery<{ messages: Message[] }>(GET_MESSAGES);
-  const [deleteMessage] = useMutation(DELETE_MESSAGE);
+  const { data, loading, error } = useQuery<{ events: Event[] }>(GET_EVENTS);
+  const [deleteEvent] = useMutation(DELETE_EVENT);
 
-  useSubscription(MESSAGE_ADDED, {
+  useSubscription(EVENT_ADDED, {
     onData: ({ client, data }) => {
       if (data) {
         client.cache.modify({
           fields: {
-            messages(existingMessages = []) {
-              const newMessageRef = client.cache.writeFragment({
-                data: data.data?.messageAdded,
+            events(existingEvents = []) {
+              const newEventRef = client.cache.writeFragment({
+                data: data.data?.eventAdded,
                 fragment: gql`
-                  fragment NewMessage on Message {
+                  fragment NewEvent on Event {
                     id
+                    title
                     content
-                    username
+                    address
+                    date
                   }
                 `,
               });
-              return [...existingMessages, newMessageRef];
+              return [newEventRef, ...existingEvents]; // Add the new event to the beginning of the list
             },
           },
         });
@@ -44,15 +53,15 @@ const EventList: React.FC = () => {
     },
   });
 
-  useSubscription(MESSAGE_DELETED, {
+  useSubscription(EVENT_DELETED, {
     onData: ({ client, data }) => {
       if (data) {
         client.cache.modify({
           fields: {
-            messages(existingMessages = []) {
-              return existingMessages.filter(
-                (message: { __ref: string }) =>
-                  message.__ref !== `Message:${data.data?.messageDeleted.id}`
+            events(existingEvents = []) {
+              return existingEvents.filter(
+                (event: { __ref: string }) =>
+                  event.__ref !== `Event:${data.data?.eventDeleted.id}`
               );
             },
           },
@@ -61,43 +70,52 @@ const EventList: React.FC = () => {
     },
   });
 
-  const handleUpdateMessage = (id: string, content: string) => {
-    setSelectedMessage({ id, content });
+  const handleUpdateEvent = (id: string, content: string) => {
+    setSelectedEvent({ id, content });
     setIsUpdateFormOpen(true);
   };
 
-  const handleDeleteMessage = (id: string) => {
-    deleteMessage({ variables: { id } });
+  const handleDeleteEvent = (id: string) => {
+    deleteEvent({ variables: { id } });
+  };
+
+  const handleSelectEvent = (event: Event) => {
+    onEventSelect(event); // Notify parent component
   };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error.message}</p>;
 
+  // Sort events by date in descending order
+  const sortedEvents = data?.events.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
   return (
     <div className={styles.container}>
       <div className={styles.cardContainer}>
-        {data?.messages.map((message: Message) => (
-          <Card className={styles.card} key={message.id} elevation={3}>
+        {sortedEvents?.map((event: Event) => (
+          <Card className={styles.card} key={event.id} elevation={3} onClick={() => handleSelectEvent(event)}>
             <CardContent>
               <Box className={styles.header}>
-                <Typography variant="h6" className={styles.headerText}>Event Header</Typography>
+                <Typography variant="h6" className={styles.headerText}>{event.title || "Event Title"}</Typography>
                 <Box className={styles.distance}>
                   <FontAwesomeIcon icon={faMapPin} />
                   <span className={styles.distanceValue}>42.0 mi</span>
                 </Box>
               </Box>
               <Box className={styles.cardContent}>
-                <Typography>{message.content}</Typography>
-                <Typography className={styles.address}>123 Placeholder St, City, Country</Typography>
+                <Typography>{event.content || "No Content"}</Typography>
                 <Box className={styles.avatarWrapper}>
-                  <Avatar>{message.username?.charAt(0) || "U"}</Avatar>
-                  <Typography className={styles.username}>{message.username || "Unknown"}</Typography>
+                  <Box className={styles.avatarGroup}>
+                    <Avatar className={styles.avatar}>{event.username?.charAt(0) || "U"}</Avatar>
+                    <Typography className={styles.username}>{event.username || "Unknown"}</Typography>
+                  </Box>
+                  <Typography className={styles.date}>{new Date(event.date).toLocaleDateString() || "Date not set"}</Typography>
                 </Box>
                 <Box className={styles.buttonWrapper}>
-                  <Button variant="contained" color="primary" onClick={() => handleUpdateMessage(message.id, message.content)}>
+                  <Button variant="contained" color="primary" onClick={() => handleUpdateEvent(event.id, event.content)}>
                     Update
                   </Button>
-                  <Button variant="contained" color="secondary" onClick={() => handleDeleteMessage(message.id)}>
+                  <Button variant="contained" color="secondary" onClick={() => handleDeleteEvent(event.id)}>
                     Delete
                   </Button>
                 </Box>
@@ -106,14 +124,14 @@ const EventList: React.FC = () => {
           </Card>
         ))}
       </div>
-      {/* {selectedMessage && (
+      {selectedEvent && (
         <UpdateForm
           isOpen={isUpdateFormOpen}
           onClose={() => setIsUpdateFormOpen(false)}
-          messageId={selectedMessage.id}
-          initialContent={selectedMessage.content}
-        /> */}
-      {/* )} */}
+          eventId={selectedEvent.id}
+          initialContent={selectedEvent.content}
+        />
+      )}
     </div>
   );
 };
