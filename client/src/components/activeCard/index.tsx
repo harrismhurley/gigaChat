@@ -13,10 +13,10 @@ interface CardProps {
 
 const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdBy, imageSrc }) => {
   return (
-    <Card className={styles.card} elevation={3}> {/* Use Material UI Card */}
+    <Card className={styles.card} elevation={3} style={{ borderRadius: 0 }}>
       <Box className={styles.leftBox}>
         <Box className={styles.userInfo}>
-          <Avatar>{createdBy.charAt(0)}</Avatar> {/* Material UI Avatar */}
+          <Avatar>{createdBy.charAt(0)}</Avatar>
           <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography>
         </Box>
         <Typography variant="h5" className={styles.title}>{title}</Typography>
