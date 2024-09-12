@@ -4,8 +4,8 @@ import bcrypt from 'bcryptjs';
 const SECRET_KEY = 'your-secret-key';
 
 // Helper function to generate a JWT token
-export const generateToken = (user: { id: string; email: string }): string => {
-  return jwt.sign({ id: user.id, email: user.email }, SECRET_KEY, { expiresIn: '1h' });
+export const generateToken = (user: { id: string; username: string }): string => {
+  return jwt.sign({ id: user.id, username: user.username }, SECRET_KEY, { expiresIn: '1h' });
 };
 
 // Helper function to verify a password

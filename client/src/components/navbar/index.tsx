@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Avatar, TextField, Button } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 import styles from './index.module.scss';
 import FormDrawer from '../addForm'; // Re-added FormDrawer
 
@@ -15,16 +15,9 @@ const Navbar: React.FC = () => {
   return (
     <nav className={styles.navbar}>
       <Avatar alt="GigaChat" src="path-to-your-avatar-image" className={styles.logo} />
-      <div className={styles.middleSection}>
-        <TextField
-          variant="outlined"
-          placeholder="Search..."
-          className={styles.searchInput}
-          InputProps={{ className: styles.input }}
-        />
-      </div>
+
       <div className={styles.buttonGroup}>
-        <FormDrawer /> {/* FormDrawer IconButton now added here */}
+        <FormDrawer /> 
         <Button variant="contained" className={styles.logoutButton} onClick={handleLogout}>
           Logout
         </Button>

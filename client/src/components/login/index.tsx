@@ -7,14 +7,14 @@ import styles from './index.module.scss';
 
 
 const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION);
 
   const handleLogin = async () => {
     try {
-      const { data } = await login({ variables: { email, password } });
+      const { data } = await login({ variables: { username, password } });
 
       if (data?.login?.token) {
         localStorage.setItem('token', data.login.token);
@@ -30,11 +30,11 @@ const Login: React.FC = () => {
       <h1>Login</h1>
       <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
         <div>
-          <h3>Email</h3>
+          <h3>Username</h3>
           <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            type="username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             required
           />
         </div>
