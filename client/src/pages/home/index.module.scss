@@ -1,35 +1,31 @@
 .homeContainer {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-  }
-  
-  .mainContent {
-    display: flex;
-    flex: 1;
-  }
-  
-  .redSection {
-    background-color: red;
-    flex: 1;
-  }
-  
-  .blueYellowSection {
-    display: flex;
-    flex-direction: column;
-    flex: 2;
-  }
-  
-  .blueBox, .yellowBox {
-    height: 50vh;;
-  }
-  
-  .blueBox {
-    background-color: blue;
-    color: white;
-  }
-  
-  .yellowBox {
-    color: black;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.mainContent {
+  display: flex;
+  flex: 1;
+}
+
+.sidebarContainer {
+  // Removed background color, retained flex value
+  flex: 1;
+}
+
+.eventDetailsSection {
+  display: flex;
+  flex-direction: column;
+  flex: 2;
+}
+
+.aerialViewContainer {
+  position: relative;
+  overflow: hidden;
+  flex: 3; 
+}
+
+.eventCardContainer {
+  flex: 2;
+}

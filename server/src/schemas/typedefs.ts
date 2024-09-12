@@ -7,7 +7,7 @@ const typeDefs = `
 
   type User {
     id: ID!
-    email: String!
+    username: String!
   }
 
   type Event {
@@ -26,8 +26,8 @@ const typeDefs = `
   }
 
   type Mutation {
-    signup(email: String!, password: String!): AuthPayload
-    login(email: String!, password: String!): AuthPayload
+    signup(username: String!, password: String!): AuthPayload
+    login(username: String!, password: String!): AuthPayload
     deleteUser(id: ID!): User!
     addEvent(title: String!, content: String!, address: String, date: String): Event
     updateEvent(id: ID!, title: String, content: String, address: String, date: String): Event

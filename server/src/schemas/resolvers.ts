@@ -4,7 +4,7 @@ import { generateToken, verifyPassword, hashPassword } from '../utils/auth';
 
 const pubsub = new PubSub();
 const events: Array<{ id: string, title: string, content: string, address?: string, date?: string }> = [];
-const users: Array<{ id: string, email: string, password: string }> = [];
+const users: Array<{ id: string, username: string, password: string }> = [];
 
 const resolvers = {
   Query: {
@@ -14,25 +14,25 @@ const resolvers = {
     user: (parent: any, { id }: { id: string }) => users.find(user => user.id === id),
   },
   Mutation: {
-    signup: async (parent: any, { email, password }: { email: string, password: string }) => {
-      const existingUser = users.find(user => user.email === email);
+    signup: async (parent: any, { username, password }: { username: string, password: string }) => {
+      const existingUser = users.find(user => user.username === username);
       if (existingUser) {
-        throw new Error('Email is already in use.');
+        throw new Error('Username is already in use.');
       }
 
       const hashedPassword = await hashPassword(password);
-      const user = { id: uuidv4(), email, password: hashedPassword };
+      const user = { id: uuidv4(), username, password: hashedPassword };
       users.push(user);
       
       const token = generateToken(user);
       
       return {
         token,
-        user: { id: user.id, email: user.email }
+        user: { id: user.id, username: user.username }
       };
     },
-    login: async (parent: any, { email, password }: { email: string, password: string }) => {
-      const user = users.find(user => user.email === email);
+    login: async (parent: any, { username, password }: { username: string, password: string }) => {
+      const user = users.find(user => user.username === username);
       if (!user) throw new Error('User not found');
       
       const isPasswordValid = await verifyPassword(password, user.password);
@@ -42,7 +42,7 @@ const resolvers = {
 
       return {
         token,
-        user: { id: user.id, email: user.email }
+        user: { id: user.id, username: user.username }
       };
     },
 
