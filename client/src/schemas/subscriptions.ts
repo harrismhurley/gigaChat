@@ -8,10 +8,13 @@ export const EVENT_ADDED = gql`
       content
       address
       date
+      user {
+        id
+        username
+      }
     }
   }
 `;
-
 export const EVENT_UPDATED = gql`
   subscription eventUpdated {
     eventUpdated {
@@ -20,6 +23,10 @@ export const EVENT_UPDATED = gql`
       content
       address
       date
+      user {
+        id
+        username
+      }
     }
   }
 `;

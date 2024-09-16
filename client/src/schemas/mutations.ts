@@ -27,15 +27,19 @@ export const LOGIN_MUTATION = gql`
 
 // Event Mutations
 export const ADD_EVENT = gql`
-  mutation addEvent($title: String!, $content: String!, $address: String, $date: String) {
-    addEvent(title: $title, content: $content, address: $address, date: $date) {
+  mutation addEvent($title: String!, $content: String!, $address: String, $date: String, $userId: ID!) {
+    addEvent(title: $title, content: $content, address: $address, date: $date, userId: $userId) {
       id
       title
       content
       address
       date
-    }
+      user {
+        id
+        username
+      }
   }
+}
 `;
 
 export const UPDATE_EVENT = gql`

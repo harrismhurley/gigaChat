@@ -8,6 +8,10 @@ export const GET_EVENTS = gql`
       content
       address
       date
+      user {
+        id
+        username
+      }
     }
   }
 `;
@@ -20,6 +24,10 @@ export const GET_EVENT = gql`
       content
       address
       date
+      user {
+        id
+        username
+      }
     }
   }
 `;

@@ -4,44 +4,58 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useMutation } from '@apollo/client';
-import { ADD_EVENT } from '../../schemas'; 
-import PlaceAutocompleteInput from '../autocomplete/index'; // Import the autocomplete component
+import { ADD_EVENT } from '../../schemas';
+import PlaceAutocompleteInput from '../autocomplete/index';
 import styles from './index.module.scss';
+import { useAuth } from '../../utils/authContext';
 
 const FormDrawer: React.FC = () => {
+  const { user, token } = useAuth(); // Get user from context
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [address, setAddress] = useState('');
   const [date, setDate] = useState<Date | null>(new Date());
   const [addEvent, { loading, error }] = useMutation(ADD_EVENT);
+ 
 
   const toggleDrawer = (open: boolean) => () => {
     setIsOpen(open);
   };
 
   const handleAddEvent = async () => {
-    if (title && content) {
+    console.log('Adding event with data:', {
+      title,
+      content,
+      address,
+      date: date ? date.toISOString() : null,
+      userId: user?.id
+    });
+
+    if (title && content && user) {
       try {
-        // Execute the mutation with all required fields
-        await addEvent({ 
-          variables: { 
-            title, 
-            content, 
-            address, // This is now set by the PlaceAutocompleteInput
-            date: date ? date.toISOString() : null 
-          } 
+        await addEvent({
+          variables: {
+            title,
+            content,
+            address,
+            date: date ? date.toISOString() : null,
+            userId: user.id
+          }
         });
-        setTitle('');  // Reset the title field
-        setContent(''); // Reset the content field
-        setAddress(''); // Reset the address field
-        setDate(new Date()); // Reset date to initial value
-        setIsOpen(false); // Close the drawer
+        // Reset fields after successful submission
+        setTitle('');
+        setContent('');
+        setAddress('');
+        setDate(new Date());
+        setIsOpen(false);
       } catch (e) {
         console.error('Error adding event:', e);
+        alert('Error adding event: ' + (e instanceof Error ? e.message : 'Unknown error'));
       }
     } else {
-      console.error('Title and content are required');
+      console.error('Title, content, and user ID are required');
+      alert('Title, content, and user ID are required');
     }
   };
 
@@ -55,7 +69,7 @@ const FormDrawer: React.FC = () => {
   return (
     <>
       <Button variant="outlined" onClick={toggleDrawer(true)}>
-        <AddBoxIcon /> {/* Use the MUI icon */}
+        <AddBoxIcon />
       </Button>
       <Drawer anchor="right" open={isOpen} onClose={toggleDrawer(false)}>
         <div className={styles.drawerContainer}>
@@ -75,9 +89,10 @@ const FormDrawer: React.FC = () => {
             margin="normal"
             className={styles.textField}
           />
-          
-          {/* Replace the Address TextField with the PlaceAutocompleteInput */}
-          <PlaceAutocompleteInput onPlaceSelect={handlePlaceSelect} />
+
+          <PlaceAutocompleteInput
+            onPlaceSelect={handlePlaceSelect}
+          />
 
           <DatePicker
             selected={date}
@@ -97,7 +112,7 @@ const FormDrawer: React.FC = () => {
             color="primary"
             onClick={handleAddEvent}
             className={styles.submitButton}
-            disabled={loading} // Disable the button while loading
+            disabled={loading} 
           >
             {loading ? 'Submitting...' : 'Submit'}
           </Button>

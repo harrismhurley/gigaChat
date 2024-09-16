@@ -1,29 +1,35 @@
-// client/src/components/login/index.tsx
 import React, { useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { LOGIN_MUTATION } from '../../schemas/mutations';
-import styles from './index.module.scss'; 
-
-
+import { useAuth } from '../../utils/authContext'; 
+import styles from './index.module.scss';
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+  const { setToken, setUser } = useAuth(); // Get setToken and setUser from context
   const [login, { loading, error }] = useMutation(LOGIN_MUTATION);
 
   const handleLogin = async () => {
     try {
       const { data } = await login({ variables: { username, password } });
-
-      if (data?.login?.token) {
+  
+      if (data?.login?.token && data?.login?.user) {
+        console.log('Login successful. Token:', data.login.token);  // Log token
+        console.log('Login successful. User:', data.login.user);    // Log user
+        
+        setToken(data.login.token);
+        setUser(data.login.user); // Update user in context
         localStorage.setItem('token', data.login.token);
+        localStorage.setItem('user', JSON.stringify(data.login.user));
         window.location.href = '/home';
       }
     } catch (err) {
       console.error('Login error:', err);
     }
   };
+  
 
   return (
     <div className={styles.login}>

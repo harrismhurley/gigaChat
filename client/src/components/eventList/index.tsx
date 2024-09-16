@@ -13,7 +13,9 @@ interface Event {
   content: string;
   address: string;
   date: string;
-  username?: string;
+  user: { // Ensure that `user` is included in the Event interface
+    username: string;
+  };
 }
 
 interface EventListProps {
@@ -42,10 +44,13 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                     content
                     address
                     date
+                    user {
+                      username
+                    }
                   }
                 `,
               });
-              return [newEventRef, ...existingEvents]; 
+              return [newEventRef, ...existingEvents];
             },
           },
         });
@@ -80,7 +85,7 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
   };
 
   const handleSelectEvent = (event: Event) => {
-    onEventSelect(event); // Notify parent component
+    onEventSelect(event);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -105,8 +110,8 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
               <Box className={styles.cardContent}>
                 <Box className={styles.avatarWrapper}>
                   <Box className={styles.avatarGroup}>
-                    <Avatar className={styles.avatar}>{event.username?.charAt(0) || "U"}</Avatar>
-                    <Typography className={styles.username}>{event.username || "Unknown"}</Typography>
+                    <Avatar className={styles.avatar}>{event.user?.username?.charAt(0) || "U"}</Avatar>
+                    <Typography className={styles.username}>{event.user?.username || "Unknown"}</Typography>
                   </Box>
                   <Typography className={styles.date}>{new Date(event.date).toLocaleDateString() || "Date not set"}</Typography>
                 </Box>
