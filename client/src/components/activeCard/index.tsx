@@ -16,8 +16,8 @@ const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdB
     <Card className={styles.card} elevation={3} style={{ borderRadius: 0 }}>
       <Box className={styles.leftBox}>
         <Box className={styles.userInfo}>
-          <Avatar>{createdBy.charAt(0)}</Avatar>
-          <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography>
+          <Avatar>{createdBy.charAt(0)}</Avatar> 
+          <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography> {/* Username */}
         </Box>
         <Typography variant="h5" className={styles.title}>{title}</Typography>
         <Typography variant="body1" className={styles.description}>{description}</Typography>

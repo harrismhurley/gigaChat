@@ -5,12 +5,17 @@ import EventList from '../../components/eventList/index';
 import Map from '../../components/map/index';
 import styles from './index.module.scss';
 
+interface User {
+  username: string;
+}
+
 interface Event {
   id: string;
   title: string;
   content: string;
   address: string;
   date: string;
+  user: User;
 }
 
 const Home: React.FC = () => {
@@ -35,7 +40,7 @@ const Home: React.FC = () => {
                 address={selectedEvent.address || 'Address not set'}
                 title={selectedEvent.title || 'No Title'}
                 description={selectedEvent.content || 'No Description'}
-                createdBy={'Unknown'}
+                createdBy={selectedEvent.user.username}
               />
             ) : (
               <div>Select an event to see details</div>

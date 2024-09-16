@@ -1,4 +1,3 @@
-// server/src/schemas/typedefs.ts
 const typeDefs = `
   type AuthPayload {
     token: String
@@ -16,6 +15,7 @@ const typeDefs = `
     content: String!
     address: String
     date: String
+    user: User
   }
 
   type Query {
@@ -29,7 +29,7 @@ const typeDefs = `
     signup(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
     deleteUser(id: ID!): User!
-    addEvent(title: String!, content: String!, address: String, date: String): Event
+    addEvent(title: String!, content: String!, address: String, date: String, userId: ID!): Event
     updateEvent(id: ID!, title: String, content: String, address: String, date: String): Event
     deleteEvent(id: ID!): Event
   }
