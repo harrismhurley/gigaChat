@@ -5,6 +5,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import { useMutation } from '@apollo/client';
 import { ADD_EVENT } from '../../schemas'; 
+import PlaceAutocompleteInput from '../autocomplete/index'; // Import the autocomplete component
 import styles from './index.module.scss';
 
 const FormDrawer: React.FC = () => {
@@ -27,7 +28,7 @@ const FormDrawer: React.FC = () => {
           variables: { 
             title, 
             content, 
-            address, 
+            address, // This is now set by the PlaceAutocompleteInput
             date: date ? date.toISOString() : null 
           } 
         });
@@ -41,6 +42,13 @@ const FormDrawer: React.FC = () => {
       }
     } else {
       console.error('Title and content are required');
+    }
+  };
+
+  // Handle place selection from autocomplete
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult | null) => {
+    if (place?.formatted_address) {
+      setAddress(place.formatted_address); // Set the address based on the selected place
     }
   };
 
@@ -67,14 +75,10 @@ const FormDrawer: React.FC = () => {
             margin="normal"
             className={styles.textField}
           />
-          <TextField
-            label="Address"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-            fullWidth
-            margin="normal"
-            className={styles.textField}
-          />
+          
+          {/* Replace the Address TextField with the PlaceAutocompleteInput */}
+          <PlaceAutocompleteInput onPlaceSelect={handlePlaceSelect} />
+
           <DatePicker
             selected={date}
             onChange={(newDate: Date | null) => setDate(newDate)}
