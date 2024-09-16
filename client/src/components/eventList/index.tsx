@@ -17,7 +17,7 @@ interface Event {
 }
 
 interface EventListProps {
-  onEventSelect: (event: Event) => void; // Add this prop
+  onEventSelect: (event: Event) => void; 
 }
 
 const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
@@ -45,7 +45,7 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                   }
                 `,
               });
-              return [newEventRef, ...existingEvents]; // Add the new event to the beginning of the list
+              return [newEventRef, ...existingEvents]; 
             },
           },
         });
@@ -103,7 +103,6 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                 </Box>
               </Box>
               <Box className={styles.cardContent}>
-                <Typography>{event.content || "No Content"}</Typography>
                 <Box className={styles.avatarWrapper}>
                   <Box className={styles.avatarGroup}>
                     <Avatar className={styles.avatar}>{event.username?.charAt(0) || "U"}</Avatar>
