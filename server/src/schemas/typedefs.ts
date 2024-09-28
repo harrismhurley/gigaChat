@@ -4,6 +4,10 @@ const typeDefs = `
     user: User
   }
 
+  type S3Payload {
+    url: String!
+  }
+
   type User {
     id: ID!
     username: String!
@@ -13,9 +17,10 @@ const typeDefs = `
     id: ID!
     title: String!
     content: String!
-    address: String
-    date: String
-    user: User
+    address: String!
+    date: String!
+    user: User!
+    imageUrl: String
   }
 
   type Query {
@@ -29,8 +34,26 @@ const typeDefs = `
     signup(username: String!, password: String!): AuthPayload
     login(username: String!, password: String!): AuthPayload
     deleteUser(id: ID!): User!
-    addEvent(title: String!, content: String!, address: String, date: String, userId: ID!): Event
-    updateEvent(id: ID!, title: String, content: String, address: String, date: String): Event
+    
+    addEvent(
+      title: String!,
+      content: String!,
+      address: String!,  
+      date: String!,
+      userId: ID!,
+      imageUrl: String
+    ): Event
+
+    updateEvent(
+      id: ID!,
+      title: String,
+      content: String,
+      address: String,
+      date: String
+    ): Event
+
+    generateUploadURL(fileName: String!, fileType: String!): S3Payload
+    generateDownloadURL(fileName: String!): S3Payload
     deleteEvent(id: ID!): Event
   }
 

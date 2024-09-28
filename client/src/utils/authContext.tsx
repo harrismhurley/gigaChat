@@ -22,16 +22,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   // Load user info from localStorage if available
   useEffect(() => {
     const savedUser = localStorage.getItem('user');
-    console.log('Loaded user from localStorage:', savedUser);
     if (savedUser) {
       const parsedUser = JSON.parse(savedUser);
-      console.log('Parsed user from localStorage:', parsedUser);
       setUser(parsedUser);
     }
   }, []);
   
   useEffect(() => {
-    console.log('Token changed:', token);
     if (token) {
       localStorage.setItem('token', token);
     } else {
@@ -40,7 +37,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   }, [token]);
   
   useEffect(() => {
-    console.log('User changed:', user);
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
     } else {

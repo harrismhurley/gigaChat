@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useQuery, useMutation, useSubscription, gql } from '@apollo/client';
-import { Avatar, Card, CardContent, Typography, Button, Box } from '@mui/material';
+import { Avatar, Card, CardContent, Typography, Button, Box, CircularProgress, Alert } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapPin } from '@fortawesome/free-solid-svg-icons';
 import styles from './index.module.scss';
-import { GET_EVENTS, DELETE_EVENT, EVENT_ADDED, EVENT_DELETED } from '../../schemas';
+import { GET_EVENTS, DELETE_EVENT, EVENT_ADDED, EVENT_UPDATED, EVENT_DELETED } from '../../schemas';
 import UpdateForm from '../updateForm';
 
 interface Event {
@@ -13,9 +13,10 @@ interface Event {
   content: string;
   address: string;
   date: string;
-  user: { // Ensure that `user` is included in the Event interface
+  user: { 
     username: string;
   };
+  imageUrl?: string;  // Include optional imageUrl field
 }
 
 interface EventListProps {
@@ -29,8 +30,10 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
   const { data, loading, error } = useQuery<{ events: Event[] }>(GET_EVENTS);
   const [deleteEvent] = useMutation(DELETE_EVENT);
 
+  // Subscription for newly added events
   useSubscription(EVENT_ADDED, {
     onData: ({ client, data }) => {
+      console.log("EVENT_ADDED data:", data);  // Log the incoming data
       if (data) {
         client.cache.modify({
           fields: {
@@ -47,9 +50,11 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                     user {
                       username
                     }
+                    imageUrl  # Ensure imageUrl is included
                   }
                 `,
               });
+              console.log("New Event Reference:", newEventRef);  // Log the new event reference
               return [newEventRef, ...existingEvents];
             },
           },
@@ -58,8 +63,30 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
     },
   });
 
+  // Subscription for updated events
+  useSubscription(EVENT_UPDATED, {
+    onData: ({ client, data }) => {
+      console.log("EVENT_UPDATED data:", data);  // Log the updated data
+      if (data) {
+        client.cache.modify({
+          fields: {
+            events(existingEvents = []) {
+              return existingEvents.map((event: { __ref: string }) =>
+                event.__ref === `Event:${data.data?.eventUpdated.id}`
+                  ? { ...event, ...data.data?.eventUpdated }
+                  : event
+              );
+            },
+          },
+        });
+      }
+    },
+  });
+
+  // Subscription for deleted events
   useSubscription(EVENT_DELETED, {
     onData: ({ client, data }) => {
+      console.log("EVENT_DELETED data:", data);  // Log the deleted data
       if (data) {
         client.cache.modify({
           fields: {
@@ -88,8 +115,8 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
     onEventSelect(event);
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>{error.message}</p>;
+  if (loading) return <Box className={styles.loading}><CircularProgress /></Box>;
+  if (error) return <Alert severity="error">{error.message}</Alert>;
 
   // Sort events by date in descending order
   const sortedEvents = data?.events.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
@@ -101,25 +128,51 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
           <Card className={styles.card} key={event.id} elevation={3} onClick={() => handleSelectEvent(event)}>
             <CardContent>
               <Box className={styles.header}>
-                <Typography variant="h6" className={styles.headerText}>{event.title || "Event Title"}</Typography>
+                <Typography variant="h6" className={styles.headerText}>
+                  {event.title || "Event Title"}
+                </Typography>
                 <Box className={styles.distance}>
                   <FontAwesomeIcon icon={faMapPin} />
-                  <span className={styles.distanceValue}>42.0 mi</span>
+                  <span className={styles.distanceValue}>42.0 mi</span> {/* Placeholder for distance */}
                 </Box>
               </Box>
+
+              {event.imageUrl && (
+                <img src={event.imageUrl} alt={event.title} className={styles.eventImage} />
+              )}
+
               <Box className={styles.cardContent}>
                 <Box className={styles.avatarWrapper}>
                   <Box className={styles.avatarGroup}>
-                    <Avatar className={styles.avatar}>{event.user?.username?.charAt(0) || "U"}</Avatar>
-                    <Typography className={styles.username}>{event.user?.username || "Unknown"}</Typography>
+                    <Avatar className={styles.avatar}>
+                      {event.user?.username?.charAt(0) || "U"}
+                    </Avatar>
+                    <Typography className={styles.username}>
+                      {event.user?.username || "Unknown"}
+                    </Typography>
                   </Box>
-                  <Typography className={styles.date}>{new Date(event.date).toLocaleDateString() || "Date not set"}</Typography>
+                  <Typography className={styles.date}>
+                    {new Date(event.date).toLocaleDateString() || "Date not set"}
+                  </Typography>
                 </Box>
+
+                <Typography className={styles.content}>
+                  {event.content}
+                </Typography>
+
                 <Box className={styles.buttonWrapper}>
-                  <Button variant="contained" color="primary" onClick={() => handleUpdateEvent(event.id, event.content)}>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleUpdateEvent(event.id, event.content)}
+                  >
                     Update
                   </Button>
-                  <Button variant="contained" color="secondary" onClick={() => handleDeleteEvent(event.id)}>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={() => handleDeleteEvent(event.id)}
+                  >
                     Delete
                   </Button>
                 </Box>
@@ -128,6 +181,7 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
           </Card>
         ))}
       </div>
+
       {selectedEvent && (
         <UpdateForm
           isOpen={isUpdateFormOpen}
