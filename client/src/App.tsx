@@ -3,10 +3,10 @@ import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import client from './apolloClient';
+import client from './utils/apolloClient';
 import FrontPage from './pages/frontPage/index';
 import Home from './pages/home/index';
-import { APIProvider } from '@vis.gl/react-google-maps'; // Import the APIProvider for Google Maps
+import { APIProvider } from '@vis.gl/react-google-maps';
 import './App.module.scss';
 
 // Use the API key from environment variables

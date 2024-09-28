@@ -27,19 +27,43 @@ export const LOGIN_MUTATION = gql`
 
 // Event Mutations
 export const ADD_EVENT = gql`
-  mutation addEvent($title: String!, $content: String!, $address: String, $date: String, $userId: ID!) {
-    addEvent(title: $title, content: $content, address: $address, date: $date, userId: $userId) {
+  mutation addEvent(
+    $title: String!
+    $content: String!
+    $address: String!
+    $date: String!
+    $userId: ID!
+    $imageUrl: String   
+  ) {
+    addEvent(
+      title: $title,
+      content: $content,
+      address: $address,
+      date: $date,
+      userId: $userId,
+      imageUrl: $imageUrl   
+    ) {
       id
       title
       content
       address
       date
+      imageUrl   
       user {
         id
         username
       }
+    }
   }
-}
+`;
+
+
+export const GET_PRESIGNED_URL = gql`
+  mutation getPresignedUrl($fileName: String!, $fileType: String!) {
+    generateUploadURL(fileName: $fileName, fileType: $fileType) {  
+      url  
+    }
+  }
 `;
 
 export const UPDATE_EVENT = gql`

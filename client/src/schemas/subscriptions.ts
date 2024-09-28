@@ -12,9 +12,11 @@ export const EVENT_ADDED = gql`
         id
         username
       }
+      imageUrl  
     }
   }
 `;
+
 export const EVENT_UPDATED = gql`
   subscription eventUpdated {
     eventUpdated {
@@ -27,6 +29,7 @@ export const EVENT_UPDATED = gql`
         id
         username
       }
+      imageUrl  
     }
   }
 `;

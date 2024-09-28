@@ -1,6 +1,7 @@
 import { PubSub } from 'graphql-subscriptions';
 import { v4 as uuidv4 } from 'uuid';
 import { generateToken, verifyPassword, hashPassword } from '../utils/auth';
+import { generateUploadURL, generateDownloadURL } from '../utils/s3';
 
 const pubsub = new PubSub();
 const events: Array<{ id: string, title: string, content: string, address?: string, date?: string, userId: string }> = [];
@@ -51,16 +52,54 @@ const resolvers = {
         user: { id: user.id, username: user.username }
       };
     },
-    addEvent: (parent: any, { title, content, address, date, userId }: { title: string, content: string, address?: string, date?: string, userId: string }) => {
+    addEvent: (parent: any, { title, content, address, date, userId, imageUrl }: { title: string; content: string; address: string; date: string; userId: string; imageUrl: string }) => {
+      console.log('Received addEvent mutation with the following data:');
+      console.log('Title:', title);
+      console.log('Content:', content);
+      console.log('Address:', address);
+      console.log('Date:', date);
+      console.log('User ID:', userId);
+      console.log('Image URL:', imageUrl);  // Add this
+    
+      // Check if any required fields are missing
+      if (!title || !content || !address || !date || !userId) {
+        console.error('Missing required fields for adding event');
+        throw new Error('All fields are required');
+      }
+    
       const user = users.find(user => user.id === userId);
-      if (!user) throw new Error('User not found');
-      const event = { id: uuidv4(), title, content, address, date, userId };
+      if (!user) {
+        console.error(`User not found for ID: ${userId}`);
+        throw new Error('User not found');
+      }
+    
+      const event = { id: uuidv4(), title, content, address, date, userId, imageUrl };  // Add imageUrl here
       events.push(event);
+    
       pubsub.publish('EVENT_ADDED', { eventAdded: event });
+      console.log('Event added successfully:', event);
+    
       return {
         ...event,
         user
       };
+    },
+    
+    generateUploadURL: async (parent: any, { fileName, fileType }: { fileName: string, fileType: string }) => {
+      try {
+        const url = await generateUploadURL(fileName, fileType);
+        return { url };
+      } catch (err) {
+        throw new Error('Failed to generate upload URL');
+      }
+    },
+    generateDownloadURL: async (parent: any, { fileName }: { fileName: string }) => {
+      try {
+        const url = await generateDownloadURL(fileName);
+        return { url };
+      } catch (err) {
+        throw new Error('Failed to generate download URL');
+      }
     },
     updateEvent: (parent: any, { id, title, content, address, date }: { id: string, title?: string, content?: string, address?: string, date?: string }) => {
       const event = events.find(event => event.id === id);

@@ -30,8 +30,8 @@ const PlaceAutocompleteInput: React.FC<PlaceAutocompleteInputProps> = ({ onPlace
       id="autocomplete-input"
       options={options}
       getOptionLabel={(option) => option.description}
-      onInputChange={(event, value) => setInputValue(value)}
-      onChange={(event, value) => {
+      onInputChange={(_, value) => setInputValue(value)}
+      onChange={(_, value) => {
         if (value) {
           const place = { formatted_address: value.description } as google.maps.places.PlaceResult;
           onPlaceSelect(place);
