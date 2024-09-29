@@ -2,14 +2,19 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Avatar, Button } from '@mui/material';
 import styles from './index.module.scss';
-import FormDrawer from '../addForm'; // Re-added FormDrawer
+import FormDrawer from '../addForm'; 
+import { useAuth } from '../../utils/authContext';
+
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const { setToken, setUser } = useAuth(); 
 
   const handleLogout = () => {
+    setToken(null);
+    setUser(null);
     localStorage.removeItem('token');
-    navigate('/');
+    localStorage.removeItem('user');    navigate('/');
   };
 
   return (

@@ -27,7 +27,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       setUser(parsedUser);
     }
   }, []);
-  
+
+  // Save token to localStorage whenever it changes
   useEffect(() => {
     if (token) {
       localStorage.setItem('token', token);
@@ -35,7 +36,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('token');
     }
   }, [token]);
-  
+
+  // Save user to localStorage whenever it changes
   useEffect(() => {
     if (user) {
       localStorage.setItem('user', JSON.stringify(user));
@@ -43,7 +45,30 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       localStorage.removeItem('user');
     }
   }, [user]);
-  
+
+  // Validate token on app load
+  useEffect(() => {
+    const validateToken = async () => {
+      if (token) {
+        try {
+          const response = await fetch('/api/validate-token', { headers: { Authorization: `Bearer ${token}` } });
+          if (!response.ok) {
+            setToken(null);
+            setUser(null);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+          }
+        } catch (error) {
+          console.error('Error validating token:', error);
+          setToken(null);
+          setUser(null);
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+        }
+      }
+    };
+    validateToken();
+  }, [token]);
 
   return (
     <AuthContext.Provider value={{ token, user, setToken, setUser }}>
