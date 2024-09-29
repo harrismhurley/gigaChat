@@ -21,7 +21,11 @@ const FormDrawer: React.FC = () => {
   const [getPresignedUrl] = useMutation(GET_PRESIGNED_URL);  // Mutation to get presigned URL
 
   const toggleDrawer = (open: boolean) => () => {
-    setIsOpen(open);
+    if (user) {
+      setIsOpen(open);
+    } else {
+      alert('You must be logged in to add an event.');
+    }
   };
 
   const uploadImageToS3 = async (file: File) => {

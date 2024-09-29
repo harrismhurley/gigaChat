@@ -16,8 +16,6 @@ const Login: React.FC = () => {
       const { data } = await login({ variables: { username, password } });
   
       if (data?.login?.token && data?.login?.user) {
-        console.log('Login successful. Token:', data.login.token);  // Log token
-        console.log('Login successful. User:', data.login.user);    // Log user
         
         setToken(data.login.token);
         setUser(data.login.user); // Update user in context

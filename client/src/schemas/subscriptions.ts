@@ -8,11 +8,11 @@ export const EVENT_ADDED = gql`
       content
       address
       date
+      imageUrl  
       user {
         id
         username
       }
-      imageUrl  
     }
   }
 `;
@@ -25,11 +25,11 @@ export const EVENT_UPDATED = gql`
       content
       address
       date
+      imageUrl  
       user {
         id
         username
       }
-      imageUrl  
     }
   }
 `;

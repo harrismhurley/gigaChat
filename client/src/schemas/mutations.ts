@@ -22,8 +22,17 @@ export const LOGIN_MUTATION = gql`
         username
       }
     }
-  }
-`;
+    }
+    `;
+
+export const GET_PRESIGNED_URL = gql`
+      mutation getPresignedUrl($fileName: String!, $fileType: String!) {
+        generateUploadURL(fileName: $fileName, fileType: $fileType) {  
+          url  
+        }
+      }
+    `;
+
 
 // Event Mutations
 export const ADD_EVENT = gql`
@@ -58,25 +67,34 @@ export const ADD_EVENT = gql`
 `;
 
 
-export const GET_PRESIGNED_URL = gql`
-  mutation getPresignedUrl($fileName: String!, $fileType: String!) {
-    generateUploadURL(fileName: $fileName, fileType: $fileType) {  
-      url  
-    }
-  }
-`;
 
 export const UPDATE_EVENT = gql`
-  mutation updateEvent($id: ID!, $title: String, $content: String, $address: String, $date: String) {
-    updateEvent(id: $id, title: $title, content: $content, address: $address, date: $date) {
+  mutation updateEvent(
+    $id: ID!,
+    $title: String,
+    $content: String,
+    $address: String,
+    $date: String,
+    $imageUrl: String
+  ) {
+    updateEvent(
+      id: $id,
+      title: $title,
+      content: $content,
+      address: $address,
+      date: $date,
+      imageUrl: $imageUrl
+    ) {
       id
       title
       content
       address
       date
+      imageUrl
     }
   }
 `;
+
 
 export const DELETE_EVENT = gql`
   mutation deleteEvent($id: ID!) {

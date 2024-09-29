@@ -50,6 +50,7 @@ const typeDefs = `
       content: String,
       address: String,
       date: String
+      imageUrl: String
     ): Event
 
     generateUploadURL(fileName: String!, fileType: String!): S3Payload

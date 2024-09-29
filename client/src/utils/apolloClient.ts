@@ -5,7 +5,13 @@ import { getMainDefinition } from '@apollo/client/utilities';
 
 // Create a GraphQL WebSocket client
 const wsClient = createWsClient({
-  url: 'ws://localhost:3000/graphql', // Your GraphQL subscription endpoint
+  url: 'ws://localhost:3000/graphql', 
+  on: {
+    connected: () => console.log('WebSocket connected'),
+    error: (error) => console.error('WebSocket error', error),
+    closed: () => console.log('WebSocket closed'),
+  },
+
 });
 
 // Create a WebSocket link using graphql-ws
