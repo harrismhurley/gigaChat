@@ -9,9 +9,9 @@
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run dev --prefix client\"",
     "build": "npm run build --prefix server && npm run build --prefix client",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "clean": "rm -rf client/node_modules client/package-lock.json server/node_modules server/package-lock.json node_modules package-lock.json",
-    "cleanProd": "rm -rf client/node_modules client/package-lock.json client/dist server/dist server/node_modules server/package-lock.json node_modules package-lock.json"
-
+    "clean": "rm -rf client/dist server/dist client/node_modules client/package-lock.json server/node_modules server/package-lock.json node_modules package-lock.json",
+    "cleanNode": "rm -rf client/node_modules client/package-lock.json server/node_modules server/package-lock.json node_modules package-lock.json",
+    "cleanProd": "rm -rf client/dist server/dist"
   },
   "keywords": [],
   "author": "",

@@ -13,10 +13,10 @@ interface Event {
   content: string;
   address: string;
   date: string;
+  imageUrl?: string;  
   user: { 
     username: string;
   };
-  imageUrl?: string;  // Include optional imageUrl field
 }
 
 interface EventListProps {
@@ -54,7 +54,8 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                   }
                 `,
               });
-              console.log("New Event Reference:", newEventRef);  // Log the new event reference
+              // Log the new event reference
+              console.log("New Event Reference:", newEventRef);  
               return [newEventRef, ...existingEvents];
             },
           },
@@ -66,7 +67,8 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
   // Subscription for updated events
   useSubscription(EVENT_UPDATED, {
     onData: ({ client, data }) => {
-      console.log("EVENT_UPDATED data:", data);  // Log the updated data
+      // Log the updated data
+      console.log("EVENT_UPDATED data:", data);  
       if (data) {
         client.cache.modify({
           fields: {
@@ -86,7 +88,8 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
   // Subscription for deleted events
   useSubscription(EVENT_DELETED, {
     onData: ({ client, data }) => {
-      console.log("EVENT_DELETED data:", data);  // Log the deleted data
+      // Log the deleted data
+      console.log("EVENT_DELETED data:", data);  
       if (data) {
         client.cache.modify({
           fields: {
