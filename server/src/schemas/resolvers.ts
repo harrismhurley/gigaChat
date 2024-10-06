@@ -52,14 +52,7 @@ const resolvers = {
         user: { id: user.id, username: user.username }
       };
     },
-    addEvent: (parent: any, { title, content, address, date, userId, imageUrl }: { title: string; content: string; address: string; date: string; userId: string; imageUrl: string }) => {
-      console.log('Received addEvent mutation with the following data:');
-      console.log('Title:', title);
-      console.log('Content:', content);
-      console.log('Address:', address);
-      console.log('Date:', date);
-      console.log('User ID:', userId);
-      console.log('Image URL:', imageUrl);  // Add this
+    addEvent: (parent: any, { title, content, address, date, userId, imageUrl }: { title: string; content: string; address: string; date: string; userId: string; imageUrl: string }) => { 
     
       // Check if any required fields are missing
       if (!title || !content || !address || !date || !userId) {
@@ -73,13 +66,14 @@ const resolvers = {
         throw new Error('User not found');
       }
     
-      const event = { id: uuidv4(), title, content, address, date, userId, imageUrl };  // Add imageUrl here
+      const event = { id: uuidv4(), title, content, address, date, userId, imageUrl };
       events.push(event);
+      console.log('Event Created:', event);
+
+      pubsub.publish('EVENT_ADDED', { eventAdded: { ...event, user } });
+      console.log('Subscription Triggered:', event);
     
-      pubsub.publish('EVENT_ADDED', { eventAdded: event });
-      console.log('Event added successfully:', event);
-    
-      return {
+      return { 
         ...event,
         user
       };
