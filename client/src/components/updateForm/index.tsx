@@ -4,6 +4,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useMutation } from '@apollo/client';
 import { UPDATE_EVENT } from '../../schemas';
+import PlaceAutocompleteInput from '../autocomplete/index'; // Import PlaceAutocompleteInput
 import styles from './index.module.scss';
 
 interface UpdateFormProps {
@@ -21,6 +22,13 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ isOpen, onClose, eventId, initi
   const [errorMessage, setErrorMessage] = useState('');
 
   const [updateEvent] = useMutation(UPDATE_EVENT);
+
+  // Handle place selection from autocomplete
+  const handlePlaceSelect = (place: google.maps.places.PlaceResult | null) => {
+    if (place?.formatted_address) {
+      setAddress(place.formatted_address);
+    }
+  };
 
   const handleUpdateEvent = async () => {
     if (!content.trim()) {
@@ -60,14 +68,10 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ isOpen, onClose, eventId, initi
           margin="normal"
           className={styles.textField}
         />
-        <TextField
-          label="Address"
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-          fullWidth
-          margin="normal"
-          className={styles.textField}
-        />
+        
+        {/* Integrate PlaceAutocompleteInput for Address */}
+        <PlaceAutocompleteInput onPlaceSelect={handlePlaceSelect} />
+
         <DatePicker
           selected={date}
           onChange={(newDate: Date | null) => setDate(newDate)}

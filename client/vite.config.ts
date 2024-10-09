@@ -1,7 +1,8 @@
+// https://vitejs.dev/config/
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
+import path from 'path';
 
-// https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
@@ -14,6 +15,7 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         silenceDeprecations: ["legacy-js-api"],
+        additionalData: `@import "${path.resolve(__dirname, 'src/styles/variables.scss')}";`,
       },
     },
   },

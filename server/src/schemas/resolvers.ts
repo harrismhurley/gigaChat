@@ -36,6 +36,8 @@ const resolvers = {
       const user = { id: uuidv4(), username, password: hashedPassword };
       users.push(user);
       const token = generateToken(user);
+      console.log('Generated token:', token);  // Log the generated token
+
       return {
         token,
         user: { id: user.id, username: user.username }

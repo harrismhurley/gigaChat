@@ -1,6 +1,8 @@
 /* client/src/pages/signup.module.scss */
+@import '../../styles/variables';
+
 .signup {
-    background-color: #fb8500; /* Background color for Signup */
+    background-color: $mfn-tertiary; /* Background color for Signup */
     width: 100%;
     height: 100%;
     display: flex;
@@ -43,7 +45,7 @@
         button {
             padding: 10px 20px;
             cursor: pointer;
-            background-color: #ffffff; /* Button background color */
+            background-color: $mfn-background; /* Button background color */
             color: #000; /* Text color for button */
             border: none; /* Remove border */
         }
