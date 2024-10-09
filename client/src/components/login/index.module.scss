@@ -1,6 +1,8 @@
 /* client/src/pages/login.module.scss */
+@import '../../styles/variables';
+
 .login {
-    background-color: #ffffff; /* Background color for Login */
+    background-color: $mfn-background; /* Background color for Login */
     color: #000; /* Text color */
     width: 100%;
     height: 100%;
@@ -44,7 +46,7 @@
         button {
             padding: 10px 20px;
             cursor: pointer;
-            background-color: #fb8500; /* Button background color */
+            background-color: $mfn-primary; /* Button background color */
             color: #fff; /* Text color for button */
             border: none; /* Remove border */
         }

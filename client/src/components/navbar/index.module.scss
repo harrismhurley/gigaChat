@@ -1,10 +1,11 @@
+@import '../../styles/variables';
+
 .navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  background-color: $mfn-background;
   padding: 10px;
-  color: white;
 
   .logo {
     border-radius: 50%;
@@ -13,54 +14,32 @@
     margin-right: 20px;
   }
 
-  .middleSection {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    margin-right: 20px;
-
-    .searchInput {
-      max-width: 300px;
-      width: 100%;
-
-      .input {
-        background-color: white;
-        border-radius: 4px;
-
-        .MuiOutlinedInput-root {
-          color: black;
-
-          fieldset {
-            border-color: transparent;
-          }
-
-          &:hover fieldset {
-            border-color: #ccc;
-          }
-
-          &.Mui-focused fieldset {
-            border-color: #777;
-          }
-        }
-      }
-    }
-  }
-
   .buttonGroup {
     display: flex;
     gap: 10px;
 
     button {
-      padding: 5px 10px;
+      padding: 5px 5px;
       border-radius: 3px;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      border: none;
+      color: white;
 
-      &.logoutButton {
-        background-color: #fb8500;
-        color: white;
+      &.addButton {
+        background-color: $mfn-secondary;
 
         &:hover {
-          background-color: #e76f51;
+          background-color: $mfn-green;
+        }
+      }
+
+      &.logoutButton {
+        background-color: $mfn-secondary;
+
+        &:hover {
+          background-color: $mfn-green;
         }
       }
     }

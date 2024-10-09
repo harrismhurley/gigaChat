@@ -1,36 +1,62 @@
-// FormDrawer.module.scss
+@import '../../styles/variables';
+
+.addIcon {
+  color: $mfn-green;
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
 
 .drawerContainer {
-    width: 250px;
-    padding: 16px;
-  
-    .textField {
-      margin-bottom: 16px;
-    }
-  
-    .datePicker {
-      margin-bottom: 16px;
-      
-      .MuiOutlinedInput-root {
-        background-color: white;
-        border-radius: 4px;
-  
-        fieldset {
-          border-color: transparent;
-        }
-  
-        &:hover fieldset {
-          border-color: #ccc;
-        }
-  
-        &.Mui-focused fieldset {
-          border-color: #777;
-        }
+  width: 250px;
+  padding: 16px;
+
+  .textField {
+    margin-bottom: 16px;
+
+    .MuiOutlinedInput-root {
+      background-color: white;
+      border-radius: 4px;
+
+      fieldset {
+        border: none; 
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $mfn-primary; 
       }
     }
-  
-    .submitButton {
-      margin-top: 16px;
+  }
+
+  .datePicker {
+    margin-bottom: 16px;
+
+    .MuiOutlinedInput-root {
+      background-color: white;
+      border-radius: 4px;
+
+      fieldset {
+        border: none; 
+      }
+
+      &:hover fieldset {
+        border-color: transparent; 
+      }
+
+      &.Mui-focused fieldset {
+        border-color: $mfn-primary;
+      }
     }
   }
-  
+
+  .submitButton {
+    margin-top: 16px;
+    background-color: $mfn-primary; 
+    color: white;
+
+    &:hover {
+      background-color: $mfn-tertiary; 
+    }
+  }
+}
