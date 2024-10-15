@@ -8,10 +8,11 @@
 
   .submitButton {
     margin-top: 16px;
-  }
+    background-color: $mfn-primary; 
+    color: white;
 
-  .cancelButton {
-    margin-top: 16px;
-    margin-right: 8px;
-  }
+    &:hover {
+      background-color: $mfn-tertiary; 
+    }
+  }  
 }

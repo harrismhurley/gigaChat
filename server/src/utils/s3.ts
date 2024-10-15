@@ -21,11 +21,11 @@ const logS3Params = (operation: string, params: object) => {
 // Generates a presigned URL for uploading a file to S3 with a unique file name.
 // @param {string} fileName - The original name of the file to upload.
 // @param {string} fileType - The MIME type of the file.
-// @returns {Promise<string>} - A presigned URL for uploading.
-export const generateUploadURL = (fileName: string, fileType: string): Promise<string> => {
+// @returns {Promise<{ url: string, fileName: string }>} - A presigned URL for uploading.
+export const generateUploadURL = (fileName: string, fileType: string): Promise<{ url: string; fileName: string }> => {
   // Create a unique file name by appending a UUID
   const uniqueFileName = `${uuidv4()}-${fileName}`;
-  
+
   const params = {
     Bucket: S3_BUCKET,
     Key: uniqueFileName, // Use the unique file name
@@ -42,12 +42,14 @@ export const generateUploadURL = (fileName: string, fileType: string): Promise<s
         console.error('Error generating S3 presigned URL:', err);
         return reject(new Error(`Failed to generate presigned URL for file upload: ${err.message}`));
       }
-      resolve(url);
+      console.log('Generated Unique File Name:', uniqueFileName);
+
+      resolve({ url, fileName: uniqueFileName }); // Return both URL and fileName
     });
   });
 };
 
-// Generates a presigned URL for downloading a file from S3 with a unique file name.
+// Generates a presigned URL for downloading a file from S3.
 // @param {string} fileName - The name of the file to download.
 // @returns {Promise<string>} - A presigned URL for downloading.
 export const generateDownloadURL = (fileName: string): Promise<string> => {

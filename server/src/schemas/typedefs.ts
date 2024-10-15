@@ -6,6 +6,7 @@ const typeDefs = `
 
   type S3Payload {
     url: String!
+    fileName: String!
   }
 
   type User {
@@ -49,7 +50,7 @@ const typeDefs = `
       title: String,
       content: String,
       address: String,
-      date: String
+      date: String,
       imageUrl: String
     ): Event
 

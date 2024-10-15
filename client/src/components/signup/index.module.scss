@@ -48,6 +48,11 @@
             background-color: $mfn-background; /* Button background color */
             color: #000; /* Text color for button */
             border: none; /* Remove border */
+            border-radius: 5px; /* Round the corners */
+
+            &:hover {
+                background-color: #ffff; /* Blue color on hover */
+            }
         }
     }
 }

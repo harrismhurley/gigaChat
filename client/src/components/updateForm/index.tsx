@@ -96,13 +96,6 @@ const UpdateForm: React.FC<UpdateFormProps> = ({ isOpen, onClose, eventId, initi
         >
           Submit
         </Button>
-        <Button
-          variant="outlined"
-          onClick={onClose}
-          className={styles.cancelButton}
-        >
-          Cancel
-        </Button>
       </div>
     </Drawer>
   );

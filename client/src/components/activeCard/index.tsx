@@ -3,12 +3,12 @@ import { Avatar, Card, Typography, Box } from '@mui/material';
 import styles from './index.module.scss';
 
 interface CardProps {
-  imageSrc?: string;
-  timeCreated: string;
-  address: string;
-  title: string;
-  description: string;
-  createdBy: string;
+  imageSrc?: string; // Image URL for the event
+  timeCreated: string; // Time the event was created
+  address: string; // Event address
+  title: string; // Event title
+  description: string; // Event description
+  createdBy: string; // User who created the event
 }
 
 const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdBy, imageSrc }) => {
@@ -17,14 +17,19 @@ const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdB
       <Box className={styles.leftBox}>
         <Box className={styles.userInfo}>
           <Avatar>{createdBy.charAt(0)}</Avatar> 
-          <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography> {/* Username */}
+          <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography>
         </Box>
         <Typography variant="h5" className={styles.title}>{title}</Typography>
         <Typography variant="body1" className={styles.description}>{description}</Typography>
         <Typography variant="body2" className={styles.address}>{address}</Typography>
       </Box>
       <Box className={styles.rightBox}>
-        <img src={imageSrc || 'https://via.placeholder.com/300x300'} alt="Placeholder" />
+        {/* Use the imageSrc prop to display the event image, or a placeholder if none exists */}
+        <img 
+          src={imageSrc} 
+          alt={title} // Alt text for better accessibility
+          style={{ width: '100%', height: 'auto', borderRadius: '0' }} // Ensures image fits well
+        />
       </Box>
     </Card>
   );
