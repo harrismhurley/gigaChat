@@ -4,7 +4,7 @@ import { generateToken, verifyPassword, hashPassword } from '../utils/auth';
 import { generateUploadURL, generateDownloadURL } from '../utils/s3';
 
 const pubsub = new PubSub();
-const events: Array<{ id: string, title: string, content: string, address?: string, date?: string, userId: string }> = [];
+const events: Array<{ id: string, title: string, content: string, address?: string, date?: string, userId: string, imageUrl?: string }> = [];
 const users: Array<{ id: string, username: string, password: string }> = [];
 
 const resolvers = {
@@ -54,37 +54,37 @@ const resolvers = {
         user: { id: user.id, username: user.username }
       };
     },
-    addEvent: (parent: any, { title, content, address, date, userId, imageUrl }: { title: string; content: string; address: string; date: string; userId: string; imageUrl: string }) => { 
-    
+    addEvent: (parent: any, { title, content, address, date, userId, imageUrl }: { title: string; content: string; address: string; date: string; userId: string; imageUrl?: string }) => {
+
       // Check if any required fields are missing
       if (!title || !content || !address || !date || !userId) {
         console.error('Missing required fields for adding event');
         throw new Error('All fields are required');
       }
-    
+
       const user = users.find(user => user.id === userId);
       if (!user) {
         console.error(`User not found for ID: ${userId}`);
         throw new Error('User not found');
       }
-    
+
       const event = { id: uuidv4(), title, content, address, date, userId, imageUrl };
       events.push(event);
       console.log('Event Created:', event);
 
       pubsub.publish('EVENT_ADDED', { eventAdded: { ...event, user } });
       console.log('Subscription Triggered:', event);
-    
-      return { 
+
+      return {
         ...event,
         user
       };
     },
-    
+
     generateUploadURL: async (parent: any, { fileName, fileType }: { fileName: string, fileType: string }) => {
       try {
-        const url = await generateUploadURL(fileName, fileType);
-        return { url };
+        const { url, fileName: uniqueFileName } = await generateUploadURL(fileName, fileType); // Get both URL and unique filename
+        return { url, fileName: uniqueFileName }; // Return both URL and unique filename
       } catch (err) {
         throw new Error('Failed to generate upload URL');
       }
@@ -97,13 +97,14 @@ const resolvers = {
         throw new Error('Failed to generate download URL');
       }
     },
-    updateEvent: (parent: any, { id, title, content, address, date }: { id: string, title?: string, content?: string, address?: string, date?: string }) => {
+    updateEvent: (parent: any, { id, title, content, address, date, imageUrl }: { id: string, title?: string, content?: string, address?: string, date?: string, imageUrl?: string }) => {
       const event = events.find(event => event.id === id);
       if (!event) throw new Error('Event not found');
       if (title !== undefined) event.title = title;
       if (content !== undefined) event.content = content;
       if (address !== undefined) event.address = address;
       if (date !== undefined) event.date = date;
+      if (imageUrl !== undefined) event.imageUrl = imageUrl; // Allow updating imageUrl
       pubsub.publish('EVENT_UPDATED', { eventUpdated: event });
       return {
         ...event,

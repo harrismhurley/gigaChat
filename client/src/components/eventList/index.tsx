@@ -14,7 +14,6 @@ interface Event {
   content: string;
   address: string;
   date: string;
-  imageUrl?: string;
   user: {
     username: string;
   };
@@ -65,7 +64,6 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                     user {
                       username
                     }
-                    imageUrl  
                   }
                 `,
               });
@@ -172,9 +170,8 @@ const EventList: React.FC<EventListProps> = ({ onEventSelect }) => {
                 </Box>
               </Box>
 
-              {event.imageUrl && (
-                <img src={event.imageUrl} alt={event.title} className={styles.eventImage} />
-              )}
+              {/* Remove the image rendering logic */}
+              {/* <img src={event.imageUrl} alt={event.title} className={styles.eventImage} /> */}
 
               <Box className={styles.cardContent}>
                 <Box className={styles.avatarWrapper}>

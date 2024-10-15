@@ -3,7 +3,7 @@ import { Drawer, TextField, Button } from '@mui/material';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { useMutation } from '@apollo/client';
-import { ADD_EVENT, GET_PRESIGNED_URL } from '../../schemas'; 
+import { ADD_EVENT, GET_PRESIGNED_URL } from '../../schemas';
 import PlaceAutocompleteInput from '../autocomplete/index';
 import styles from './index.module.scss';
 import { useAuth } from '../../utils/authContext';
@@ -27,19 +27,17 @@ const FormDrawer: React.FC<FormDrawerProps> = ({ isOpen, toggleDrawer }) => {
 
   const uploadImageToS3 = async (file: File) => {
     try {
-      const fileName = file.name;
       const fileType = file.type;
-
-      console.log('Requesting presigned URL for:', { fileName, fileType });
+      console.log('Requesting presigned URL for:', { fileType });
 
       // Get presigned URL from server
       const { data } = await getPresignedUrl({
-        variables: { fileName, fileType }
+        variables: { fileName: file.name, fileType }
       });
 
       console.log('Received presigned URL:', data);
 
-      const presignedUrl = data.generateUploadURL.url;
+      const { url: presignedUrl, fileName: uniqueFileName } = data.generateUploadURL;
 
       // Upload the image to S3 using the presigned URL
       await fetch(presignedUrl, {
@@ -52,8 +50,8 @@ const FormDrawer: React.FC<FormDrawerProps> = ({ isOpen, toggleDrawer }) => {
 
       console.log('Image uploaded successfully.');
 
-      // Return the file's public URL on S3 using Vite's environment variable syntax
-      return `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${fileName}`;
+      // Return the file's public URL on S3
+      return `https://${S3_BUCKET_NAME}.s3.amazonaws.com/${uniqueFileName}`;
     } catch (err) {
       console.error('Error uploading image to S3:', err);
       throw new Error('Failed to upload image');

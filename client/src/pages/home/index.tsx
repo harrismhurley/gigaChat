@@ -15,6 +15,7 @@ interface Event {
   content: string;
   address: string;
   date: string;
+  imageUrl?: string; // Ensure this matches EventList's Event interface
   user: User;
 }
 
@@ -35,7 +36,7 @@ const Home: React.FC = () => {
           <div className={styles.eventCardContainer}>
             {selectedEvent ? (
               <ActiveCard
-                imageSrc="https://via.placeholder.com/300x200"
+                imageSrc={selectedEvent.imageUrl || "https://via.placeholder.com/300x200"} // Use selectedEvent.imageUrl
                 timeCreated={new Date(selectedEvent.date).toLocaleString()}
                 address={selectedEvent.address || 'Address not set'}
                 title={selectedEvent.title || 'No Title'}

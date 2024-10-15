@@ -49,6 +49,11 @@
             background-color: $mfn-primary; /* Button background color */
             color: #fff; /* Text color for button */
             border: none; /* Remove border */
+            border-radius: 5px; /* Round the corners */
+
+            &:hover {
+                background-color: $mfn-tertiary; /* Blue color on hover */
+            }
         }
     }
 }
