@@ -1,35 +1,65 @@
 import React from 'react';
-import { Avatar, Card, Typography, Box } from '@mui/material';
+import { Avatar, Card, Typography, Box, IconButton } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import CommentIcon from '@mui/icons-material/Comment';
+import ShareIcon from '@mui/icons-material/Share';
 import styles from './index.module.scss';
 
 interface CardProps {
-  imageSrc?: string; // Image URL for the event
-  timeCreated: string; // Time the event was created
-  address: string; // Event address
-  title: string; // Event title
-  description: string; // Event description
-  createdBy: string; // User who created the event
+  imageSrc?: string;
+  timeCreated: string;
+  address: string;
+  title: string;
+  description: string;
+  createdBy: string;
 }
 
-const ActiveCard: React.FC<CardProps> = ({ title, description, address, createdBy, imageSrc }) => {
+const ActiveCard: React.FC<CardProps> = ({
+  title,
+  description,
+  address,
+  createdBy,
+  imageSrc,
+}) => {
   return (
     <Card className={styles.card} elevation={3} style={{ borderRadius: 0 }}>
-      <Box className={styles.leftBox}>
-        <Box className={styles.userInfo}>
-          <Avatar>{createdBy.charAt(0)}</Avatar> 
-          <Typography variant="subtitle1" className={styles.username}>{createdBy}</Typography>
+      <Box className={styles.content}>
+        {/* Left Box */}
+        <Box className={styles.leftBox}>
+          <Typography variant="h5" className={styles.title}>
+            {title}
+          </Typography>
+          <Typography variant="body1" className={styles.description}>
+            {description}
+          </Typography>
+          <Typography variant="body2" className={styles.address}>
+            {address}
+          </Typography>
+
+          {/* Moved User Info below Address */}
+          <Box className={styles.userInfo}>
+            <Avatar>{createdBy.charAt(0)}</Avatar>
+            <Typography variant="subtitle1" className={styles.username}>
+              {createdBy}
+            </Typography>
+          </Box>
         </Box>
-        <Typography variant="h5" className={styles.title}>{title}</Typography>
-        <Typography variant="body1" className={styles.description}>{description}</Typography>
-        <Typography variant="body2" className={styles.address}>{address}</Typography>
-      </Box>
-      <Box className={styles.rightBox}>
-        {/* Use the imageSrc prop to display the event image, or a placeholder if none exists */}
-        <img 
-          src={imageSrc} 
-          alt={title} // Alt text for better accessibility
-          style={{ width: '100%', height: 'auto', borderRadius: '0' }} // Ensures image fits well
-        />
+
+        {/* Right Box with Image and Action Bar */}
+        <Box className={styles.rightBox}>
+          <img src={imageSrc} alt={title} className={styles.image} />
+          <Box className={styles.actionBar}>
+            <IconButton aria-label="like">
+              <FavoriteIcon />
+            </IconButton>
+            <IconButton aria-label="comment">
+              <CommentIcon />
+            </IconButton>
+            <IconButton aria-label="share">
+              <ShareIcon />
+            </IconButton>
+          </Box>
+        </Box>
       </Box>
     </Card>
   );

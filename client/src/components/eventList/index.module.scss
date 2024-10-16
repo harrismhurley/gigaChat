@@ -1,5 +1,8 @@
+@import '../../styles/variables';
+
 .container {
   margin: 0 auto;
+  overflow-y: scroll;
 
   .cardContainer {
     display: flex;
