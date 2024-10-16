@@ -41,7 +41,7 @@ GigaChat serves as a strong example of a modern, scalable event-posting platform
 
 ## Prerequisites
 
-Before running GigaChat locally, ensure that you have the following installed and configured:
+Before running GigaChat locally ensure that you have the following installed and configured:
 
 1. Node.js and npm: 
 GigaChat requires Node.js v16.x.x or later. To verify your version, run:

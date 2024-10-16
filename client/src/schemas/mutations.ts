@@ -25,7 +25,7 @@ export const LOGIN_MUTATION = gql`
     }
     `;
 
-    export const GET_PRESIGNED_URL = gql`
+export const GET_PRESIGNED_URL = gql`
     mutation getPresignedUrl($fileName: String!, $fileType: String!) {
       generateUploadURL(fileName: $fileName, fileType: $fileType) {  
         url  
@@ -33,7 +33,7 @@ export const LOGIN_MUTATION = gql`
       }
     }
   `;
-  
+
 
 
 // Event Mutations
